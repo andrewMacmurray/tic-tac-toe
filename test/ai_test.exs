@@ -1,6 +1,7 @@
 defmodule AiTest do
   use ExUnit.Case
   alias TicTacToe.{AI, Board}
+  alias BoardTestHelper, as: TestHelper
 
   test "AI.run should take the center if not already taken" do
     result = %Board{} |> AI.run(:player_2)

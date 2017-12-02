@@ -1,13 +1,7 @@
-defmodule FakeIO do
-  def puts(message),             do: message
-  def gets("Enter 1, 2 or 3: "), do: "3\n"
-  def gets("Enter X or O: "),    do: "X\n"
-  def gets("Enter Y or N: "),    do: "y\n"
-end
-
 defmodule UiOptionsTest do
   use ExUnit.Case
   alias TicTacToe.UI.Options
+  alias UiTestHelper, as: TestHelper
 
   test "Options.greet should welcome the user" do
     result = Options.greet(FakeIO)
@@ -136,5 +130,8 @@ defmodule UiOptionsTest do
   test "Options.get should greet the user and parse all input into correct game options" do
     result = Options.get(FakeIO)
     assert result == {:human_v_computer, :X, :player_1}
+
+    result = Options.get(FakeIO2)
+    assert result == {:human_v_human, :O, :player_1}
   end
 end
