@@ -1,4 +1,4 @@
-defmodule TestHelpers do
+defmodule TestHelper do
   alias TicTacToe.{Board, AI}
 
   # takes a list of {move, player} and applies them in sequence to a board

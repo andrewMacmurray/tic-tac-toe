@@ -1,7 +1,6 @@
 defmodule BoardTest do
   use ExUnit.Case
   alias TicTacToe.Board
-  import TestHelpers
 
   test "Board struct should contain an empty board" do
     expected = %{
@@ -18,7 +17,7 @@ defmodule BoardTest do
     assert board.player_2 == :O
   end
 
-  test "update should add a move for a given player to a board" do
+  test "Board.update should add a move for a given player to a board" do
     board =
       %Board{}
       |> Board.update(1, :player_1)
@@ -31,7 +30,7 @@ defmodule BoardTest do
     assert tile == :O
   end
 
-  test "empty_at? returns true if a given move is empty" do
+  test "Board.empty_at? returns true if a given move is empty" do
     board =
       %Board{}
       |> Board.update(5, :player_1)
@@ -42,12 +41,12 @@ defmodule BoardTest do
     refute Board.empty_at?(board, 7)
   end
 
-  test "possible_moves returns a list of possible moves" do
+  test "Board.possible_moves returns a list of possible moves" do
     moves = %Board{} |> Board.possible_moves()
     assert moves == Enum.to_list(1..9)
   end
 
-  test "moves returns the moves taken by a given player" do
+  test "Board.moves returns the moves taken by a given player" do
     board =
       %Board{}
       |> Board.update(1, :player_1)
@@ -61,7 +60,7 @@ defmodule BoardTest do
     assert moves == [3, 5]
   end
 
-  test "winner? should return false if the given player hasn't won" do
+  test "Board.winner? should return false if the given player hasn't won" do
     p1_win = %Board{} |> Board.winner?(:player_1)
     assert p1_win == false
 
@@ -69,7 +68,7 @@ defmodule BoardTest do
     assert p2_win == false
   end
 
-  test "winner? should return true if the given player has won" do
+  test "Board.winner? should return true if the given player has won" do
     winning_states = [
       [1, 2, 3], [4, 5, 6], [7, 8, 9],
       [1, 4, 7], [2, 5, 8], [3, 6, 9],
@@ -78,8 +77,8 @@ defmodule BoardTest do
 
     p1_win_boards =
       winning_states
-      |> add_player_to_states(:player_1)
-      |> Enum.map(fn mvs -> batch_update(mvs, %Board{}) end)
+      |> TestHelper.add_player_to_states(:player_1)
+      |> Enum.map(fn mvs -> TestHelper.batch_update(mvs, %Board{}) end)
 
     for b <- p1_win_boards do
       p1_win = Board.winner?(b, :player_1)
@@ -88,8 +87,8 @@ defmodule BoardTest do
 
     p2_win_boards =
       winning_states
-      |> add_player_to_states(:player_2)
-      |> Enum.map(fn mvs -> batch_update(mvs, %Board{}) end)
+      |> TestHelper.add_player_to_states(:player_2)
+      |> Enum.map(fn mvs -> TestHelper.batch_update(mvs, %Board{}) end)
 
     for b <- p2_win_boards do
       p2_win = Board.winner?(b, :player_2)
@@ -97,11 +96,11 @@ defmodule BoardTest do
     end
   end
 
-  test "full? returns true if all moves have been taken" do
+  test "Board.full? returns true if all moves have been taken" do
     board =
       1..9
       |> Enum.to_list()
-      |> run_alternating_players(:player_1, %Board{})
+      |> TestHelper.run_alternating_players(:player_1, %Board{})
     assert Board.full?(board)
   end
 end
