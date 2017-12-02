@@ -13,5 +13,17 @@ defmodule TicTacToe.UI.Message do
     ]
   end
 
-  def enter_option, do: "Please enter 1, 2 or 3:"
+  def enter_game_option, do: "Enter 1, 2 or 3: "
+
+  def vs_computer_tile_symbol, do: "Ok, which tile Symbol would you like?"
+
+  def vs_human_tile_symbol, do: "Ok Player 1, which tile Symbol would you like?"
+
+  def enter_tile_symbol, do: "Enter X or O: "
+
+  def player, do: "Would you like to go first?"
+
+  def yes_no, do: "Enter Y or N: "
+
+  def error, do: "Sorry I didn't recognize that"
 end

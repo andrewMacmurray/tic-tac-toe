@@ -48,6 +48,12 @@ defmodule TestHelper do
     full   = Board.full?(board)
     p1_win || p2_win || full
   end
+
+  def retry_after_error(io) do
+    io.puts("something went wrong")
+    :value_after_error
+  end
 end
+
 
 ExUnit.start()
