@@ -1,6 +1,7 @@
 defmodule BoardTest do
   use ExUnit.Case
   alias TicTacToe.Board
+  alias BoardTestHelper, as: TestHelper
 
   test "Board struct should contain an empty board" do
     expected = %{

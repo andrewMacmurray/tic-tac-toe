@@ -6,8 +6,8 @@ defmodule TicTacToe.AI do
   Updates a board with the best possible move for a given player
   """
   def run(board, ai_player) do
-    mvs = Board.possible_moves(board) |> length()
-    case mvs do
+    moves_left = Board.possible_moves(board) |> length()
+    case moves_left do
       9 -> take_center(board, ai_player)
       8 -> counter_first_move(board, ai_player)
       _ -> run_minimax(board, ai_player)
