@@ -35,16 +35,16 @@ defmodule TicTacToe.Minimax do
   end
 
   defp go_again(board, depth, {player, is_oponent} = ps) do
-    states =
+    move_scores =
       board
       |> Board.possible_moves()
       |> Enum.map(fn mv  -> Board.update(board, mv, player) end)
       |> Enum.map(fn brd -> minimax(brd, depth, ps) end)
 
     if is_oponent do
-      Enum.min(states)
+      Enum.min(move_scores)
     else
-      Enum.max(states)
+      Enum.max(move_scores)
     end
   end
 

@@ -16,7 +16,7 @@ defmodule TicTacToe.UI.Message do
   def enter_game_option, do: "Enter 1, 2 or 3: "
 
   def tile_symbol(:human_v_computer), do: "Ok, which tile Symbol would you like?"
-  def tile_symbol(:human_v_human), do: "Ok Player 1, which tile Symbol would you like?"
+  def tile_symbol(:human_v_human),    do: "Ok Player 1, which tile Symbol would you like?"
 
   def enter_tile_symbol, do: "Enter X or O: "
 
@@ -24,5 +24,5 @@ defmodule TicTacToe.UI.Message do
 
   def yes_no, do: "Enter Y or N: "
 
-  def error, do: "Sorry I didn't recognize that"
+  def error,  do: "Sorry I didn't recognize that"
 end
