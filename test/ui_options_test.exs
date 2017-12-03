@@ -1,7 +1,6 @@
 defmodule UiOptionsTest do
   use ExUnit.Case
   alias TicTacToe.UI.Options
-  alias UiTestHelper, as: TestHelper
 
   test "Options.greet should welcome the user" do
     result = Options.greet(FakeIO)
@@ -47,8 +46,8 @@ defmodule UiOptionsTest do
     assert result == :error
   end
 
-  test "Options.get_user_game_option should prompt user for input and return a parsed response" do
-    result = Options.get_user_game_option(FakeIO)
+  test "Options.get_game_option should prompt user for input and return a parsed response" do
+    result = Options.get_game_option(FakeIO)
     assert result == :human_v_computer
   end
 
@@ -67,14 +66,14 @@ defmodule UiOptionsTest do
     end
   end
 
-  test "Options.parse_tile_type should return :error for unrecognized input" do
+  test "Options.parse_tile_symbol should return :error for unrecognized input" do
     input = "U"
     result = Options.parse_tile_symbol(input)
     assert result == :error
   end
 
-  test "Options.get_user_tile_symbol should prompt user for tile symbol and return a parsed response" do
-    result = Options.get_user_tile_symbol(FakeIO)
+  test "Options.get_tile_symbol should prompt user for tile symbol and return a parsed response" do
+    result = Options.get_tile_symbol(FakeIO)
     assert result == :X
   end
 
@@ -102,18 +101,18 @@ defmodule UiOptionsTest do
     assert result == :error
   end
 
-  test "Options.get_user_player should prompt user for player choice and return a parsed result" do
-    result = Options.get_user_player(FakeIO)
+  test "Options.get_player should prompt user for player choice and return a parsed result" do
+    result = Options.get_player(FakeIO)
     assert result == :player_1
   end
 
-  test "Options.on_error should retry a function if the result passed to it is :error" do
-    result = Options.on_error(:error, &TestHelper.retry_after_error/1, FakeIO)
-    assert result == :value_after_error
+  test "Options.retry_on_error should call the given function if :error is passed to it" do
+    result = Options.retry_on_error(:error, fn _ -> :another_value end, FakeIO)
+    assert result == :another_value
   end
 
-  test "Options.on_error should return any non error value" do
-    result = Options.on_error(:player_2, &TestHelper.retry_after_error/1, FakeIO)
+  test "Options.retry_on_error should return any non error value" do
+    result = Options.retry_on_error(:player_2, fn _ -> :some_other_value end, FakeIO)
     assert result == :player_2
   end
 
