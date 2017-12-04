@@ -3,30 +3,25 @@ defmodule TicTacToe.AI do
   alias TicTacToe.{Board, Minimax}
 
   @doc """
-  Updates a board with the best possible move for a given player
+  Returns the best possible move for a given player
   """
   def run(board, ai_player) do
     moves_left = Board.possible_moves(board) |> length()
     case moves_left do
-      9 -> take_center(board, ai_player)
-      8 -> counter_first_move(board, ai_player)
-      _ -> run_minimax(board, ai_player)
+      9 -> take_center()
+      8 -> counter_first_move(board)
+      _ -> Minimax.best_move(board, ai_player)
     end
   end
 
-  defp counter_first_move(board, player) do
+  defp counter_first_move(board) do
     if Board.empty_at?(board, 5) do
-      take_center(board, player)
+      take_center()
     else
-      take_corner(board, player)
+      take_corner()
     end
   end
 
-  defp run_minimax(board, ai_player) do
-    mv = Minimax.best_move(board, ai_player)
-    Board.update(board, mv, ai_player)
-  end
-
-  defp take_center(board, player), do: Board.update(board, 5, player)
-  defp take_corner(board, player), do: Board.update(board, 1, player)
+  defp take_center, do: 5
+  defp take_corner, do: 1
 end

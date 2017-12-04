@@ -35,8 +35,9 @@ defmodule BoardTestHelper do
       if terminal?(new_b) do
         new_b
       else
+        best_move = AI.run(new_b, ai_player)
         new_b
-        |> AI.run(ai_player)
+        |> Board.update(best_move,ai_player)
         |> play_to_the_death(ai_player)
       end
     end

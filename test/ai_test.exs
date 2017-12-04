@@ -5,15 +5,13 @@ defmodule AiTest do
 
   test "AI.run should take the center if not already taken" do
     result = %Board{} |> AI.run(:player_2)
-    %{5 => tile} = result.tiles
-    assert tile == :O
+    assert result == 5
 
     result =
       %Board{}
       |> Board.update(1, :player_1)
       |> AI.run(:player_2)
-    %{5 => tile} = result.tiles
-    assert tile == :O
+    assert result == 5
   end
 
   test "AI.run should take the corner if the center is already taken" do
@@ -21,8 +19,7 @@ defmodule AiTest do
       %Board{}
       |> Board.update(5, :player_1)
       |> AI.run(:player_2)
-    %{1 => tile} = result.tiles
-    assert tile == :O
+    assert result == 1
   end
 
   test "AI.run should block an oponent about to win" do
@@ -31,22 +28,19 @@ defmodule AiTest do
       [5, 1, 3]
       |> TestHelper.run_alternating_players(:player_1, board)
       |> AI.run(:player_2)
-    %{7 => tile} = result.tiles
-    assert tile == :O
+    assert result == 7
 
     result =
       [5, 1, 2]
       |> TestHelper.run_alternating_players(:player_1, board)
       |> AI.run(:player_2)
-    %{8 => tile} = result.tiles
-    assert tile == :O
+    assert result == 8
 
     result =
       [5, 9, 3, 7]
       |> TestHelper.run_alternating_players(:player_2, board)
       |> AI.run(:player_2)
-    %{8 => tile} = result.tiles
-    assert tile == :O
+    assert result == 8
   end
 
   test "brute force random play, player_1 should never win" do

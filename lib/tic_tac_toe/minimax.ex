@@ -3,7 +3,7 @@ defmodule TicTacToe.Minimax do
   alias TicTacToe.Board
 
   @doc """
-  Returns the best possible move for a given player
+  Returns the best possible move for a given player via minimax algorithm
   """
   def best_move(board, ai_player) do
     {mv, _} =
