@@ -1,6 +1,6 @@
-defmodule TicTacToe.UI.Options do
+defmodule TicTacToe.Console.Options do
   @moduledoc false
-  alias TicTacToe.UI.Message
+  alias TicTacToe.Console.Message
 
   @doc """
   greets the user and collects options for the game

@@ -48,6 +48,7 @@ defmodule TicTacToe.Minimax do
     end
   end
 
-  defp swap_player_state({:player_1, is_oponent}), do: {:player_2, !is_oponent}
-  defp swap_player_state({:player_2, is_oponent}), do: {:player_1, !is_oponent}
+  defp swap_player_state({player, is_oponent}) do
+    {Board.swap_player(player), !is_oponent}
+  end
 end

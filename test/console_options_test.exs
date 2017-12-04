@@ -1,6 +1,6 @@
-defmodule UiOptionsTest do
+defmodule ConsoleOptionsTest do
   use ExUnit.Case
-  alias TicTacToe.UI.Options
+  alias TicTacToe.Console.Options
 
   test "Options.greet should welcome the user" do
     result = Options.greet(FakeIO)

@@ -48,12 +48,8 @@ defmodule BoardTest do
   end
 
   test "Board.moves returns the moves taken by a given player" do
-    board =
-      %Board{}
-      |> Board.update(1, :player_1)
-      |> Board.update(5, :player_2)
-      |> Board.update(9, :player_1)
-      |> Board.update(3, :player_2)
+    board = [1, 5, 9, 3] |> TestHelper.run_alternating_players(:player_1, %Board{})
+
     moves = board |> Board.moves(:player_1)
     assert moves == [1, 9]
 

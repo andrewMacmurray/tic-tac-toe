@@ -77,4 +77,22 @@ defmodule TicTacToe.Board do
     mvs = possible_moves(board) |> length()
     mvs == 0
   end
+
+  @doc """
+  Swaps player for the alternate one
+  """
+  def swap_player(:player_1), do: :player_2
+  def swap_player(:player_2), do: :player_1
+
+
+  @doc """
+  Returns the player who made a given move
+  """
+  def player_from_move({_, tile}, board) do
+    if tile == board.player_1 do
+      :player_1
+    else
+      :player_2
+    end
+  end
 end
