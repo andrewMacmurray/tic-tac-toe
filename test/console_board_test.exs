@@ -67,6 +67,24 @@ defmodule ConsoleBoardTest do
     assert Console.move_summary(:human_v_human, tile, %Board{}) == expected
   end
 
+  test "Console.move_summary should render computer_v_computer players correctly" do
+    expected = """
+    Player 1 took tile 5
+    Your turn Player 2
+    """
+    |> String.trim()
+    tile = {5, :X}
+    assert Console.move_summary(:computer_v_computer, tile, %Board{}) == expected
+
+    expected = """
+    Player 2 took tile 7
+    Your turn Player 1
+    """
+    |> String.trim()
+    tile = {7, :O}
+    assert Console.move_summary(:computer_v_computer, tile, %Board{}) == expected
+  end
+
   test "Console.move_summary should render human_v_computer players correctly" do
     expected = """
     Ok, I'll take tile 5

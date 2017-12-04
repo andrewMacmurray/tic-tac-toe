@@ -11,13 +11,16 @@ defmodule TicTacToe.Console.Board do
     |> Enum.join("\n")
   end
 
-  def move_summary(:human_v_human, move, board) do
+  def move_summary(:human_v_human, move, board), do: twin_user_summary(move, board)
+  def move_summary(:computer_v_computer, move, board), do: twin_user_summary(move, board)
+
+  defp twin_user_summary(move, board) do
     player              = Board.player_from_move(move, board)
     player_move_message = Message.user_move(move, player)
-    next_move_message   = player |> Board.swap_player() |> Message.next_move()
+    next_player_message = player |> Board.swap_player() |> Message.next_move()
     [
       player_move_message,
-      next_move_message
+      next_player_message
     ]
     |> Enum.join("\n")
   end
