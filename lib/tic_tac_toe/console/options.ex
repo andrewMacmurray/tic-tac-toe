@@ -1,6 +1,7 @@
 defmodule TicTacToe.Console.Options do
   @moduledoc false
   alias TicTacToe.Console.Message
+  import TicTacToe.Console.Util, only: [join_lines: 1]
 
   @doc """
   greets the user and collects options for the game
@@ -102,8 +103,6 @@ defmodule TicTacToe.Console.Options do
         result
     end
   end
-
-  defp join_lines(messages), do: Enum.join(messages, "\n")
 
   def parse_game_option(input) do
     case String.trim(input) do

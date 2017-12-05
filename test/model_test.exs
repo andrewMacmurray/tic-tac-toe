@@ -1,12 +1,12 @@
-defmodule StateTest do
+defmodule ModelTest do
   use ExUnit.Case
-  alias TicTacToe.{State, Board}
+  alias TicTacToe.{Model, Board}
   alias BoardTestHelper, as: TestHelper
 
-  test "State.init should take a tuple of options for human_v_human and return a correct State struct" do
+  test "Model.init should take a tuple of options for human_v_human and return a correct Model struct" do
     options  = {:human_v_human, :X, :player_1}
-    actual   = State.init(options)
-    expected = %State{
+    actual   = Model.init(options)
+    expected = %Model{
       game_type:   :human_v_human,
       board:       %Board{},
       next_player: :player_1,
@@ -15,8 +15,8 @@ defmodule StateTest do
     assert actual == expected
 
     options = {:human_v_human, :O, :player_1}
-    actual  = State.init(options)
-    expected = %State{
+    actual  = Model.init(options)
+    expected = %Model{
       game_type:   :human_v_human,
       board:       %Board{player_1: :O, player_2: :X},
       next_player: :player_1,
@@ -25,9 +25,9 @@ defmodule StateTest do
     assert actual == expected
   end
 
-  test "State.init should take a :computer_v_computer message and return a correct State struct" do
-    actual   = State.init(:computer_v_computer)
-    expected = %State{
+  test "Model.init should take a :computer_v_computer message and return a correct Model struct" do
+    actual   = Model.init(:computer_v_computer)
+    expected = %Model{
       game_type:   :computer_v_computer,
       board:       %Board{},
       next_player: :player_1,
@@ -36,10 +36,10 @@ defmodule StateTest do
     assert actual == expected
   end
 
-  test "State.init should take a tuple of options for human_v_computer and return a correct State struct" do
+  test "Model.init should take a tuple of options for human_v_computer and return a correct Model struct" do
     options  = {:human_v_computer, :X, :player_1}
-    actual   = State.init(options)
-    expected = %State{
+    actual   = Model.init(options)
+    expected = %Model{
       game_type:   :human_v_computer,
       board:       %Board{},
       next_player: :player_1,
@@ -49,8 +49,8 @@ defmodule StateTest do
     assert actual == expected
 
     options = {:human_v_computer, :X, :player_2}
-    actual  = State.init(options)
-    expected = %State{
+    actual  = Model.init(options)
+    expected = %Model{
       game_type:   :human_v_computer,
       board:       %Board{player_1: :O, player_2: :X},
       next_player: :player_1,
@@ -60,71 +60,71 @@ defmodule StateTest do
     assert actual == expected
   end
 
-  test "State.update should take a guess for a human_v_human game and return correctly updated state" do
-    current_state = %State{
+  test "Model.update should take a guess for a human_v_human game and return correctly updated model" do
+    current_model = %Model{
       game_type:   :human_v_human,
       board:       %Board{},
       next_player: :player_1,
       game_status: :non_terminal
     }
-    actual = State.update(current_state, 5)
+    actual = Model.update(current_model, 5)
     expected = %{
-      current_state |
+      current_model |
         next_player: :player_2,
-        board:       Board.update(current_state.board, 5, :player_1)
+        board:       Board.update(current_model.board, 5, :player_1)
     }
     assert actual == expected
   end
 
-  test "State.update should set the game_status to a terminal state when a player has won" do
+  test "Model.update should set the game_status to a terminal model when a player has won" do
     about_to_win = [5, 1, 2, 4] |> TestHelper.run_alternating_players(:player_1, %Board{})
-    current_state = %State{
+    current_model = %Model{
       board:       about_to_win,
       next_player: :player_1,
       game_type:   :human_v_human,
       game_status: :non_terminal
     }
 
-    expected_state = %State{
+    expected_model = %Model{
       board:       Board.update(about_to_win, 8, :player_1),
       next_player: :player_2,
       game_type:   :human_v_human,
       game_status: :player_1_win
     }
 
-    actual = State.update(current_state, 8)
-    assert expected_state == actual
+    actual = Model.update(current_model, 8)
+    assert expected_model == actual
   end
 
-  test "State.update should take a guess for a computer_v_computer game and return correctly updated state" do
-    current_state = %State{
+  test "Model.update should take a guess for a computer_v_computer game and return correctly updated model" do
+    current_model = %Model{
       game_type:   :computer_v_computer,
       board:       %Board{},
       next_player: :player_1,
       game_status: :non_terminal
     }
-    actual = State.update(current_state, 5)
+    actual = Model.update(current_model, 5)
     expected = %{
-      current_state |
+      current_model |
         next_player: :player_2,
-        board:       Board.update(current_state.board, 5, :player_1)
+        board:       Board.update(current_model.board, 5, :player_1)
     }
     assert actual == expected
   end
 
-  test "State.update should take a guess for a human_v_computer game and return correctly updated state" do
-    current_state = %State{
+  test "Model.update should take a guess for a human_v_computer game and return correctly updated model" do
+    current_model = %Model{
       game_type:   :human_v_computer,
       board:       %Board{},
       next_player: :player_1,
       ai_player:   :player_2,
       game_status: :non_terminal
     }
-    actual = State.update(current_state, 1)
+    actual = Model.update(current_model, 1)
     expected = %{
-      current_state |
+      current_model |
         next_player: :player_2,
-        board:       Board.update(current_state.board, 1, :player_1)
+        board:       Board.update(current_model.board, 1, :player_1)
     }
     assert actual == expected
   end

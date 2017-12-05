@@ -1,4 +1,4 @@
-defmodule TicTacToe.State do
+defmodule TicTacToe.Model do
   @moduledoc false
   defstruct [
     :game_type,
@@ -8,20 +8,20 @@ defmodule TicTacToe.State do
     game_status: :non_terminal
   ]
 
-  alias TicTacToe.{State, Board}
+  alias TicTacToe.{Model, Board}
 
   @doc """
   Initialises a game for a given config
   """
   def init({:human_v_human, symbol, player}) do
-    %State{
+    %Model{
       game_type: :human_v_human,
       board:     init_board(symbol, player)
     }
   end
 
   def init({:human_v_computer, symbol, player}) do
-    %State{
+    %Model{
       game_type: :human_v_computer,
       board:     init_board(symbol, player),
       ai_player: Board.swap_player(player)
@@ -29,7 +29,7 @@ defmodule TicTacToe.State do
   end
 
   def init(:computer_v_computer) do
-    %State{
+    %Model{
       game_type: :computer_v_computer,
       board:     %Board{}
     }
@@ -44,16 +44,16 @@ defmodule TicTacToe.State do
   end
 
   @doc """
-  Updates an existing game state with a guess and returns the new state
+  Updates an existing game model with a guess and returns an updated model
   """
-  def update(state, guess) do
-    %State{
+  def update(model, guess) do
+    %Model{
       board:       board,
       next_player: player
-    } = state
+    } = model
 
     new_board = Board.update(board, guess, player)
-    %{ state |
+    %{ model |
         board:       new_board,
         next_player: Board.swap_player(player),
         game_status: Board.status(new_board)
