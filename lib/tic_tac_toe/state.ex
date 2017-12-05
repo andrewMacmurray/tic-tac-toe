@@ -46,7 +46,7 @@ defmodule TicTacToe.State do
   @doc """
   Updates an existing game state with a guess and returns the new state
   """
-  def update(guess, state) do
+  def update(state, guess) do
     %State{
       board:       board,
       next_player: player

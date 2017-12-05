@@ -70,6 +70,22 @@ defmodule TicTacToe.Console.Render do
     |> Enum.join("\n")
   end
 
+  def render_invalid(game_type, board, player) do
+    [ render_board(board),
+      Message.invalid_guess(game_type, player),
+      Message.guess_instructions()
+    ]
+    |> Enum.join("\n")
+  end
+
+  def render_unrecognized(game_type, board, player) do
+    [ render_board(board),
+      Message.unrecognized_guess(game_type, player),
+      Message.move_instructions()
+    ]
+    |> Enum.join("\n")
+  end
+
   def move_summary(:human_v_computer, guess, player, ai_player) do
     if player == ai_player do
       [ Message.computer_guess(guess),

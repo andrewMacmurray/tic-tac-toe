@@ -67,7 +67,7 @@ defmodule StateTest do
       next_player: :player_1,
       game_status: :non_terminal
     }
-    actual = State.update(5, current_state)
+    actual = State.update(current_state, 5)
     expected = %{
       current_state |
         next_player: :player_2,
@@ -92,7 +92,7 @@ defmodule StateTest do
       game_status: :player_1_win
     }
 
-    actual = State.update(8, current_state)
+    actual = State.update(current_state, 8)
     assert expected_state == actual
   end
 
@@ -103,7 +103,7 @@ defmodule StateTest do
       next_player: :player_1,
       game_status: :non_terminal
     }
-    actual = State.update(5, current_state)
+    actual = State.update(current_state, 5)
     expected = %{
       current_state |
         next_player: :player_2,
@@ -120,7 +120,7 @@ defmodule StateTest do
       ai_player:   :player_2,
       game_status: :non_terminal
     }
-    actual = State.update(1, current_state)
+    actual = State.update(current_state, 1)
     expected = %{
       current_state |
         next_player: :player_2,

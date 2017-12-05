@@ -191,6 +191,74 @@ defmodule ConsoleRenderTest do
     assert Render.render_change(:human_v_computer, board, guess, human_player, ai_player) == expected
   end
 
+  test "Render.render_unrecognized should render the board and a message that the user made an unrecognized guess for human_v_human" do
+    expected = """
+    ---------------
+       1   2   3
+    ---+---+---+---
+       4   5   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    Player 1, number not recognized
+    Please enter a number 1-9
+    """
+    |> String.trim()
+    board = %Board{}
+    assert Render.render_unrecognized(:human_v_human, board, :player_1) == expected
+  end
+
+  test "Render.render_unrecognized should render the board and a message that the user made an unrecognized guess for human_v_computer" do
+    expected = """
+    ---------------
+       1   2   3
+    ---+---+---+---
+       4   5   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    Number not recognized
+    Please enter a number 1-9
+    """
+    |> String.trim()
+    board = %Board{}
+    assert Render.render_unrecognized(:human_v_computer, board, :player_1) == expected
+  end
+
+  test "Render.render_invalid should render the board and a message that the user made an invalid guess for a human_v_human game" do
+    expected = """
+    ---------------
+       1   2   3
+    ---+---+---+---
+       4   X   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    Player 2, that tile has already been taken
+    Please enter a valid guess
+    """
+    |> String.trim()
+    board = %Board{} |> Board.update(5, :player_1)
+    assert Render.render_invalid(:human_v_human, board, :player_2) == expected
+  end
+
+  test "Render.render_invalid should render the board and a message that the user made an invalid guess for a human_v_computer game" do
+    expected = """
+    ---------------
+       1   2   3
+    ---+---+---+---
+       4   X   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    That tile has already been taken
+    Please enter a valid guess
+    """
+    |> String.trim()
+    board = %Board{} |> Board.update(5, :player_1)
+    assert Render.render_invalid(:human_v_computer, board, :player_2) == expected
+  end
+
   test "Render.render_final should render the result of a final human_v_human game" do
     expected = """
     ---------------

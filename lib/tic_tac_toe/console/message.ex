@@ -32,6 +32,16 @@ defmodule TicTacToe.Console.Message do
   def user_move(n, :player_1), do: "Player 1 took tile #{n}"
   def user_move(n, :player_2), do: "Player 2 took tile #{n}"
 
+  def unrecognized_guess(:human_v_human, :player_1), do: "Player 1, number not recognized"
+  def unrecognized_guess(:human_v_human, :player_2), do: "Player 2, number not recognized"
+  def unrecognized_guess(:human_v_computer, _),      do: "Number not recognized"
+  def move_instructions,                             do: "Please enter a number 1-9"
+
+  def invalid_guess(:human_v_human, :player_1), do: "Player 1, that tile has already been taken"
+  def invalid_guess(:human_v_human, :player_2), do: "Player 2, that tile has already been taken"
+  def invalid_guess(:human_v_computer, _),      do: "That tile has already been taken"
+  def guess_instructions,       do: "Please enter a valid guess"
+
   def next_move(:player_1), do: "Your turn Player 1"
   def next_move(:player_2), do: "Your turn Player 2"
   def next_move_human,      do: "Your turn"
