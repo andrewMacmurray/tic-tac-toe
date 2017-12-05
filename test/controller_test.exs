@@ -137,4 +137,8 @@ defmodule ControllerTest do
     actual = Controller.handle_terminus(state, FakeIO)
     assert actual == :player_1_win
   end
+
+  test "Controller.run_game runs a game to its terminus" do
+    assert Controller.run_game(:computer_v_computer, FakeIO) == :draw
+  end
 end

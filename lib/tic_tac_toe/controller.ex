@@ -5,6 +5,23 @@ defmodule TicTacToe.Controller do
   alias IO.ANSI
 
   @doc """
+  Inits a game given options and runs it to its terminus
+  """
+  def run_game(options, io \\ IO) do
+    options
+    |> State.init()
+    |> handle_init(io)
+    |> loop(io)
+  end
+
+  def loop(state, io) do
+    case state.game_status do
+      :non_terminal -> handle_guess(state, io) |> loop(io)
+      _             -> handle_terminus(state, io)
+    end
+  end
+
+  @doc """
   Handles the beginning of the game
   """
   def handle_init(state, io \\ IO) do
@@ -147,7 +164,7 @@ defmodule TicTacToe.Controller do
 
   defp human_computer_guess(guess, state, io) do
     clear_screen() |> io.puts()
-    next_state = State.update(state, guess)
+    next_state   = State.update(state, guess)
     render_state = Render.render_change(:human_v_computer, next_state.board, guess, state.next_player, state.ai_player)
     render_state |> io.puts()
     next_state
