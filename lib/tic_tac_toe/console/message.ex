@@ -27,13 +27,15 @@ defmodule TicTacToe.Console.Message do
   def error,  do: "Sorry I didn't recognize that"
 
   def computer_guess(n), do: "Ok, I'll take tile #{n}"
+  def human_guess(n),    do: "You took tile #{n}"
 
   def user_move(n, :player_1), do: "Player 1 took tile #{n}"
   def user_move(n, :player_2), do: "Player 2 took tile #{n}"
 
   def next_move(:player_1), do: "Your turn Player 1"
   def next_move(:player_2), do: "Your turn Player 2"
-  def next_move,            do: "Your turn"
+  def next_move_human,      do: "Your turn"
+  def next_move_computer,   do: "Ok, I'll go next"
 
   def player_win(:player_1_win), do: "Player 1 won!"
   def player_win(:player_2_win), do: "Player 2 won!"

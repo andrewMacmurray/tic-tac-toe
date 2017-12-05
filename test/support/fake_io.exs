@@ -16,3 +16,13 @@ defmodule FakeIO3 do
   def puts(message), do: message
   def gets("> "),    do: "5\n"
 end
+
+defmodule FakeIO4 do
+  def puts(message), do: message
+  def gets("> "),    do: "1\n"
+end
+
+defmodule FakeIO5 do
+  def puts(message), do: message
+  def gets("> "),    do: "9\n"
+end

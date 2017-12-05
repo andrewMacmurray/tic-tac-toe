@@ -1,21 +1,66 @@
-defmodule TicTacToe.Console.RenderBoard do
+defmodule TicTacToe.Console.Render do
   @moduledoc false
   alias TicTacToe.Board
   alias TicTacToe.Console.Message
 
   def render_final(:human_v_human, board) do
     [ render_board(board),
-      final_message(:human_v_human, board)
+      final_message(board)
     ]
     |> Enum.join("\n")
   end
 
-  defp final_message(:human_v_human, board) do
+  def render_final(:computer_v_computer, board) do
+    [ render_board(board),
+      final_message(board)
+    ]
+    |> Enum.join("\n")
+  end
+
+  def render_final(:human_v_computer, board, ai_player) do
+    [ render_board(board),
+      final_message(board, ai_player)
+    ]
+    |> Enum.join("\n")
+  end
+
+  defp final_message(board, ai_player) do
+    case Board.game_status(board) do
+      :non_terminal -> :error
+      :draw         -> Message.draw()
+      :player_1_win -> final_message_(:player_1, ai_player)
+      :player_2_win -> final_message_(:player_2, ai_player)
+    end
+  end
+
+  defp final_message(board) do
     case Board.game_status(board) do
       :non_terminal -> :error
       :draw         -> Message.draw()
       player        -> Message.player_win(player)
     end
+  end
+
+  def final_message_(player, ai_player) do
+    if player == ai_player do
+      Message.computer_win()
+    else
+      Message.user_win()
+    end
+  end
+
+  def render_change(:human_v_computer, board, guess, player, ai_player) do
+    [ render_board(board),
+      move_summary(:human_v_computer, guess, player, ai_player)
+    ]
+    |> Enum.join("\n")
+  end
+
+  def render_change(:computer_v_computer, board, guess, player) do
+    [ render_board(board),
+      move_summary(:computer_v_computer, guess, player)
+    ]
+    |> Enum.join("\n")
   end
 
   def render_change(:human_v_human, board, guess, player) do
@@ -25,10 +70,16 @@ defmodule TicTacToe.Console.RenderBoard do
     |> Enum.join("\n")
   end
 
-  def move_summary(:human_v_computer, guess, _) do
-    [ Message.computer_guess(guess),
-      Message.next_move()
-    ]
+  def move_summary(:human_v_computer, guess, player, ai_player) do
+    if player == ai_player do
+      [ Message.computer_guess(guess),
+        Message.next_move_human()
+      ]
+    else
+      [ Message.human_guess(guess),
+        Message.next_move_computer()
+      ]
+    end
     |> Enum.join("\n")
   end
 
@@ -65,7 +116,7 @@ defmodule TicTacToe.Console.RenderBoard do
 
   defp next_move_message(game_type, player) do
     case game_type do
-      :human_v_computer -> Message.next_move()
+      :human_v_computer -> Message.next_move_human()
       _                 -> Message.next_move(player)
     end
   end
