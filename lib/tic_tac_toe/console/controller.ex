@@ -35,8 +35,8 @@ defmodule TicTacToe.Console.Controller do
 
   defp player_init(model, io) do
     clear_screen() |> io.puts()
-    render_state = View.render_init(model)
-    render_state |> io.puts()
+    render_model = View.render_init(model)
+    render_model |> io.puts()
     model
   end
 
@@ -52,8 +52,8 @@ defmodule TicTacToe.Console.Controller do
 
   defp terminus(model, io) do
     clear_screen() |> io.puts()
-    render_state = View.render_terminus(model)
-    render_state |> io.puts()
+    render_model = View.render_terminus(model)
+    render_model |> io.puts()
     model.game_status
   end
 
@@ -99,24 +99,24 @@ defmodule TicTacToe.Console.Controller do
 
   defp invalid_guess(model, io) do
     clear_screen() |> io.puts()
-    render_state = View.render_invalid(model)
-    render_state |> io.puts()
+    render_model = View.render_invalid(model)
+    render_model |> io.puts()
     model
   end
 
   defp unrecognized_guess(model, io) do
     clear_screen() |> io.puts()
-    render_state = View.render_unrecognized(model)
-    render_state |> io.puts()
+    render_model = View.render_unrecognized(model)
+    render_model |> io.puts()
     model
   end
 
   defp valid_guess(guess, model, io) do
     clear_screen() |> io.puts()
-    next_state   = Model.update(model, guess)
-    render_state = View.render_change(guess, model, next_state)
-    render_state |> io.puts()
-    next_state
+    next_model   = Model.update(model, guess)
+    render_model = View.render_change(guess, model, next_model)
+    render_model |> io.puts()
+    next_model
   end
 
   defp prompt_guess(io) do

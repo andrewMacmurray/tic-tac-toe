@@ -44,16 +44,16 @@ defmodule TicTacToe.Model do
   end
 
   @doc """
-  Updates an existing game state with a guess and returns the new state
+  Updates an existing game model with a guess and returns an updated model
   """
-  def update(state, guess) do
+  def update(model, guess) do
     %Model{
       board:       board,
       next_player: player
-    } = state
+    } = model
 
     new_board = Board.update(board, guess, player)
-    %{ state |
+    %{ model |
         board:       new_board,
         next_player: Board.swap_player(player),
         game_status: Board.status(new_board)

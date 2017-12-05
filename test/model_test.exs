@@ -60,71 +60,71 @@ defmodule ModelTest do
     assert actual == expected
   end
 
-  test "Model.update should take a guess for a human_v_human game and return correctly updated state" do
-    current_state = %Model{
+  test "Model.update should take a guess for a human_v_human game and return correctly updated model" do
+    current_model = %Model{
       game_type:   :human_v_human,
       board:       %Board{},
       next_player: :player_1,
       game_status: :non_terminal
     }
-    actual = Model.update(current_state, 5)
+    actual = Model.update(current_model, 5)
     expected = %{
-      current_state |
+      current_model |
         next_player: :player_2,
-        board:       Board.update(current_state.board, 5, :player_1)
+        board:       Board.update(current_model.board, 5, :player_1)
     }
     assert actual == expected
   end
 
-  test "Model.update should set the game_status to a terminal state when a player has won" do
+  test "Model.update should set the game_status to a terminal model when a player has won" do
     about_to_win = [5, 1, 2, 4] |> TestHelper.run_alternating_players(:player_1, %Board{})
-    current_state = %Model{
+    current_model = %Model{
       board:       about_to_win,
       next_player: :player_1,
       game_type:   :human_v_human,
       game_status: :non_terminal
     }
 
-    expected_state = %Model{
+    expected_model = %Model{
       board:       Board.update(about_to_win, 8, :player_1),
       next_player: :player_2,
       game_type:   :human_v_human,
       game_status: :player_1_win
     }
 
-    actual = Model.update(current_state, 8)
-    assert expected_state == actual
+    actual = Model.update(current_model, 8)
+    assert expected_model == actual
   end
 
-  test "Model.update should take a guess for a computer_v_computer game and return correctly updated state" do
-    current_state = %Model{
+  test "Model.update should take a guess for a computer_v_computer game and return correctly updated model" do
+    current_model = %Model{
       game_type:   :computer_v_computer,
       board:       %Board{},
       next_player: :player_1,
       game_status: :non_terminal
     }
-    actual = Model.update(current_state, 5)
+    actual = Model.update(current_model, 5)
     expected = %{
-      current_state |
+      current_model |
         next_player: :player_2,
-        board:       Board.update(current_state.board, 5, :player_1)
+        board:       Board.update(current_model.board, 5, :player_1)
     }
     assert actual == expected
   end
 
-  test "Model.update should take a guess for a human_v_computer game and return correctly updated state" do
-    current_state = %Model{
+  test "Model.update should take a guess for a human_v_computer game and return correctly updated model" do
+    current_model = %Model{
       game_type:   :human_v_computer,
       board:       %Board{},
       next_player: :player_1,
       ai_player:   :player_2,
       game_status: :non_terminal
     }
-    actual = Model.update(current_state, 1)
+    actual = Model.update(current_model, 1)
     expected = %{
-      current_state |
+      current_model |
         next_player: :player_2,
-        board:       Board.update(current_state.board, 1, :player_1)
+        board:       Board.update(current_model.board, 1, :player_1)
     }
     assert actual == expected
   end
