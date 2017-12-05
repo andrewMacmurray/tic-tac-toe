@@ -269,7 +269,7 @@ defmodule ConsoleViewTest do
     ---+---+---+---
        7   8   X
     ---------------
-    Player 1 won!
+    Player 1 won! 🎉
     """
     |> String.trim()
     model = Model.init({:human_v_human, :X, :player_1})
@@ -290,7 +290,7 @@ defmodule ConsoleViewTest do
     ---+---+---+---
        7   8   X
     ---------------
-    You lost!
+    You lost! 😢
     """
     |> String.trim()
     model = Model.init({:human_v_computer, :O, :player_2})

@@ -47,9 +47,9 @@ defmodule TicTacToe.Console.Message do
   def next_move_human,      do: "Your turn"
   def next_move_computer,   do: "Ok, I'll go next"
 
-  def player_win(:player_1_win), do: "Player 1 won!"
-  def player_win(:player_2_win), do: "Player 2 won!"
+  def player_win(:player_1_win), do: "Player 1 won! 🎉"
+  def player_win(:player_2_win), do: "Player 2 won! 🎉"
   def draw,         do: "It's a draw!"
-  def user_win,     do: "You won!"
-  def computer_win, do: "You lost!"
+  def user_win,     do: "You won! 🎉"
+  def computer_win, do: "You lost! 😢"
 end
