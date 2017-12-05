@@ -52,7 +52,7 @@ defmodule TicTacToe.Console.Controller do
 
   defp terminus(model, io) do
     clear_screen() |> io.puts()
-    render_state = View.render_final(model)
+    render_state = View.render_terminus(model)
     render_state |> io.puts()
     model.game_status
   end

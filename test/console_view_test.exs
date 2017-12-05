@@ -260,7 +260,7 @@ defmodule ConsoleViewTest do
     assert View.render_invalid(model) == expected
   end
 
-  test "View.render_final should render the result of a final human_v_human game" do
+  test "View.render_terminus should render the result of a terminal human_v_human game" do
     expected = """
     ---------------
        X   O   O
@@ -278,10 +278,10 @@ defmodule ConsoleViewTest do
       |> Model.update(1)
       |> Model.update(3)
       |> Model.update(9)
-    assert View.render_final(model) == expected
+    assert View.render_terminus(model) == expected
   end
 
-  test "View.render_final should render the result of a final human_v_computer game" do
+  test "View.render_terminus should render the result of a terminal human_v_computer game" do
     expected = """
     ---------------
        X   O   O
@@ -299,6 +299,6 @@ defmodule ConsoleViewTest do
       |> Model.update(1)
       |> Model.update(3)
       |> Model.update(9)
-    assert View.render_final(model) == expected
+    assert View.render_terminus(model) == expected
   end
 end
