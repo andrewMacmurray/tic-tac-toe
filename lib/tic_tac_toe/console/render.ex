@@ -41,12 +41,9 @@ defmodule TicTacToe.Console.Render do
     end
   end
 
-  def final_message_(player, ai_player) do
-    if player == ai_player do
-      Message.computer_win()
-    else
-      Message.user_win()
-    end
+  def final_message_(_player, _ai_player) do
+    # User should never win
+    Message.computer_win()
   end
 
   def render_change(:human_v_computer, board, guess, player, ai_player) do

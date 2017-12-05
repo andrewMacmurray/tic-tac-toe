@@ -37,7 +37,7 @@ defmodule ControllerTest do
     guess = 5
 
     expected = State.update(state, guess)
-    actual   = Controller.handle_guess(state, FakeIO3)
+    actual   = Controller.handle_guess(state, IOGuess5)
     assert actual == expected
   end
 
@@ -45,13 +45,13 @@ defmodule ControllerTest do
         if an unrecognised guess is given" do
     original_state = State.init({:human_v_human, :X, :player_1})
 
-    actual = Controller.handle_guess(original_state, FakeIO6)
+    actual = Controller.handle_guess(original_state, IOGuessUnrecognized)
     assert actual == original_state
   end
 
   test "If a move has already been taken should return the original state" do
     original_state = State.init({:human_v_human, :X, :player_1}) |> State.update(5)
-    actual = Controller.handle_guess(original_state, FakeIO3)
+    actual = Controller.handle_guess(original_state, IOGuess5)
 
     assert actual == original_state
   end
@@ -67,16 +67,26 @@ defmodule ControllerTest do
   test "Controller.handle_guess should return a new state for a :human_v_computer game
         where human guesses first" do
     initial_state = State.init({:human_v_computer, :X, :player_1})
-    actual = Controller.handle_guess(initial_state, FakeIO5)
-
+    actual = Controller.handle_guess(initial_state, IOGuess9)
     expected = State.update(initial_state, 9)
     assert actual == expected
+
+    initial_state = State.init({:human_v_computer, :X, :player_1})
+    actual = Controller.handle_guess(initial_state, IOGuessUnrecognized)
+    assert actual == initial_state
+
+    initial_state =
+      State.init({:human_v_computer, :X, :player_1})
+      |> State.update(5)
+      |> State.update(1)
+    actual = Controller.handle_guess(initial_state, IOGuess5)
+    assert actual == initial_state
   end
 
   test "Controller.handle_guess should return a new state for a :human_v_computer game
         where computer guesses first" do
     initial_state = State.init({:human_v_computer, :O, :player_2})
-    actual = Controller.handle_guess(initial_state, FakeIO5)
+    actual        = Controller.handle_guess(initial_state, FakeIO)
 
     expected = State.update(initial_state, 5)
     assert actual == expected
@@ -136,6 +146,12 @@ defmodule ControllerTest do
 
     actual = Controller.handle_terminus(state, FakeIO)
     assert actual == :player_1_win
+
+    initial = State.init({:human_v_computer, :O, :player_1})
+    state = [1,5,9,2,3,8] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :player_2_win
   end
 
   test "Controller.run_game runs a game to its terminus" do
