@@ -4,6 +4,77 @@ defmodule TicTacToe.Controller do
   alias TicTacToe.Console.Render
   alias IO.ANSI
 
+  @doc """
+  Handles the beginning of the game
+  """
+  def handle_init(state, io \\ IO) do
+    case state.game_type do
+      :human_v_human       -> same_player_type_init(state, io)
+      :computer_v_computer -> same_player_type_init(state, io)
+      :human_v_computer    -> human_computer_init(state, io)
+    end
+  end
+
+  defp same_player_type_init(state, io) do
+    clear_screen() |> io.puts()
+    render_state = Render.init_message(state.game_type, state.board, state.next_player)
+    render_state |> io.puts()
+    state
+  end
+
+  defp human_computer_init(state, io) do
+    clear_screen() |> io.puts()
+    if state.next_player == state.ai_player do
+      state
+    else
+      render_state = Render.init_message(state.game_type, state.board, state.next_player)
+      render_state |> io.puts()
+      state
+    end
+  end
+
+  @doc """
+  Handles the end of the game
+  """
+  def handle_terminus(state, io \\ IO) do
+    case state.game_type do
+      :human_v_human       -> same_player_type_terminus(state, io)
+      :computer_v_computer -> same_player_type_terminus(state, io)
+      :human_v_computer    -> human_computer_terminus(state, io)
+    end
+  end
+
+  defp human_computer_terminus(state, io) do
+    case state.game_status do
+      :non_terminal -> state
+      _             -> human_computer_terminus_(state, io)
+    end
+  end
+
+  defp same_player_type_terminus(state, io) do
+    case state.game_status do
+      :non_terminal -> state
+      _             -> same_player_type_terminus_(state, io)
+    end
+  end
+
+  defp human_computer_terminus_(state, io) do
+    clear_screen() |> io.puts()
+    render_state = Render.render_final(state.game_type, state.board, state.ai_player)
+    render_state |> io.puts()
+    state.game_status
+  end
+
+  defp same_player_type_terminus_(state, io) do
+    clear_screen() |> io.puts()
+    render_state = Render.render_final(state.game_type, state.board)
+    render_state |> io.puts()
+    state.game_status
+  end
+
+  @doc """
+  Handles the next move
+  """
   def handle_guess(state, io \\ IO) do
     case state.game_type do
       :human_v_human       -> handle_human_guess(state, io)

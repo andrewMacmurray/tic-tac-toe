@@ -12,6 +12,24 @@ defmodule ControllerTest do
     assert actual == expected
   end
 
+  test "Controller.handle_init should print the initial state and return the state unmodified" do
+    state = State.init({:human_v_human, :X, :player_1})
+    actual = Controller.handle_init(state, FakeIO)
+    assert actual == state
+
+    state = State.init(:computer_v_computer)
+    actual = Controller.handle_init(state, FakeIO)
+    assert actual == state
+
+    state = State.init({:human_v_computer, :X, :player_1})
+    actual = Controller.handle_init(state, FakeIO)
+    assert actual == state
+
+    state = State.init({:human_v_computer, :O, :player_2})
+    actual = Controller.handle_init(state, FakeIO)
+    assert actual == state
+  end
+
   test "Controller.handle_guess should take a game state for human_v_human,
         prompt the user for a guess
         and correctly update state" do
@@ -62,5 +80,61 @@ defmodule ControllerTest do
 
     expected = State.update(initial_state, 5)
     assert actual == expected
+  end
+
+  test "Controller.handle_terminus shoud pass state through unmodified if not in terminal state" do
+    state = State.init({:human_v_human, :X, :player_1})
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == state
+
+    state = State.init(:computer_v_computer)
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == state
+
+    state = State.init({:human_v_computer, :O, :player_2})
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == state
+  end
+
+  test "Controller.handle_terminus should handle and return terminal state for human_v_human game" do
+    initial = State.init({:human_v_human, :X, :player_1})
+    state = [5,1,2,4,8] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :player_1_win
+
+    initial = State.init({:human_v_human, :X, :player_1})
+    state = [5,1,2,8,9,3,6,4,7] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :draw
+  end
+
+  test "Controller.handle_terminus should handle and return terminal state for computer_v_computer game" do
+    initial = State.init(:computer_v_computer)
+    state = [5,1,2,4,8] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :player_1_win
+
+    initial = State.init(:computer_v_computer)
+    state = [5,1,2,8,9,3,6,4,7] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :draw
+  end
+
+  test "Controller.handle_terminus should handle and return terminal state for human_v_computer game" do
+    initial = State.init({:human_v_computer, :X, :player_1})
+    state = [5,1,2,8,9,3,6,4,7] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :draw
+
+    initial = State.init({:human_v_computer, :O, :player_2})
+    state = [5,1,2,3,8] |> Enum.reduce(initial, fn(x, acc) -> State.update(acc, x) end)
+
+    actual = Controller.handle_terminus(state, FakeIO)
+    assert actual == :player_1_win
   end
 end
