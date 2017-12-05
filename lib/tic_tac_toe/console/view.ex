@@ -2,6 +2,7 @@ defmodule TicTacToe.Console.View do
   @moduledoc false
   alias TicTacToe.Board
   alias TicTacToe.Console.Message
+  import TicTacToe.Console.Util, only: [join_lines: 1]
 
   @doc """
   Renders the final state of a game to a string
@@ -17,14 +18,14 @@ defmodule TicTacToe.Console.View do
     [ render_board(model.board),
       terminus_message(model.board)
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   def human_computer_terminus(model) do
     [ render_board(model.board),
       terminus_message(model.board, model.ai_player)
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   defp terminus_message(board, ai_player) do
@@ -54,7 +55,7 @@ defmodule TicTacToe.Console.View do
     [ render_board(curr_model.board),
       move_summary(guess, prev_model)
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   @doc """
@@ -65,7 +66,7 @@ defmodule TicTacToe.Console.View do
       Message.invalid_guess(model.game_type, model.next_player),
       Message.guess_instructions()
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   @doc """
@@ -76,7 +77,7 @@ defmodule TicTacToe.Console.View do
       Message.unrecognized_guess(model.game_type, model.next_player),
       Message.move_instructions()
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   @doc """
@@ -95,7 +96,7 @@ defmodule TicTacToe.Console.View do
       Message.user_move(guess, model.next_player),
       Message.next_move(next_player)
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   defp human_computer_summary(guess, model) do
@@ -108,7 +109,7 @@ defmodule TicTacToe.Console.View do
         Message.next_move_computer()
       ]
     end
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   @doc """
@@ -131,7 +132,7 @@ defmodule TicTacToe.Console.View do
     [ render_board(model.board),
       next_move_message(model.game_type, model.next_player)
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   defp next_move_message(game_type, player) do
@@ -147,7 +148,7 @@ defmodule TicTacToe.Console.View do
     |> Enum.chunk(3)
     |> Enum.map(&render_row/1)
     |> Enum.intersperse(board_inner_divider())
-    |> Enum.join("\n")
+    |> join_lines()
     |> pad_board()
   end
 
@@ -157,7 +158,7 @@ defmodule TicTacToe.Console.View do
       board,
       board_outer_divider()
     ]
-    |> Enum.join("\n")
+    |> join_lines()
   end
 
   defp board_outer_divider, do: "---------------"
