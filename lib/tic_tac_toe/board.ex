@@ -73,7 +73,7 @@ defmodule TicTacToe.Board do
   @doc """
   Returns the status of the game
   """
-  def game_status(board) do
+  def status(board) do
     cond do
       winner?(board, :player_1) -> :player_1_win
       winner?(board, :player_2) -> :player_2_win

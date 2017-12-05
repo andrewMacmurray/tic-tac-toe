@@ -15,7 +15,7 @@ defmodule TicTacToe do
   def handle(state, io \\ IO)
   def handle({:human_v_computer, {b, g, p}, ai_player}, io) do
     next_board = Board.update(b, g, p)
-    case Board.game_status(next_board) do
+    case Board.status(next_board) do
       :non_terminal -> next(:human_v_computer, {b, g, p}, ai_player, io) |> handle(io)
       _             -> final(:human_v_computer, next_board, ai_player) |> io.puts()
     end
@@ -23,7 +23,7 @@ defmodule TicTacToe do
 
   def handle({game_type, {b, g, p} = current_state}, io) do
     next_board = Board.update(b, g, p)
-    case Board.game_status(next_board) do
+    case Board.status(next_board) do
       :non_terminal -> next(game_type, current_state, io) |> handle(io)
       _             -> final(game_type, next_board) |> io.puts()
     end

@@ -25,7 +25,7 @@ defmodule TicTacToe.Console.Render do
   end
 
   defp final_message(board, ai_player) do
-    case Board.game_status(board) do
+    case Board.status(board) do
       :non_terminal -> :error
       :draw         -> Message.draw()
       :player_1_win -> final_message_(:player_1, ai_player)
@@ -34,7 +34,7 @@ defmodule TicTacToe.Console.Render do
   end
 
   defp final_message(board) do
-    case Board.game_status(board) do
+    case Board.status(board) do
       :non_terminal -> :error
       :draw         -> Message.draw()
       player        -> Message.player_win(player)
