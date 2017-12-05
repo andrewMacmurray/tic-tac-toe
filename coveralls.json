@@ -1,0 +1,5 @@
+{
+  "skip_files": [
+    "lib/tic_tac_toe.ex"
+  ]
+}

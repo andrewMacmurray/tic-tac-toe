@@ -3,7 +3,7 @@ defmodule TicTacToe.Minimax do
   alias TicTacToe.Board
 
   @doc """
-  Returns the best possible move for a given player
+  Returns the best possible move for a given player via minimax algorithm
   """
   def best_move(board, ai_player) do
     {mv, _} =
@@ -48,6 +48,7 @@ defmodule TicTacToe.Minimax do
     end
   end
 
-  defp swap_player_state({:player_1, is_oponent}), do: {:player_2, !is_oponent}
-  defp swap_player_state({:player_2, is_oponent}), do: {:player_1, !is_oponent}
+  defp swap_player_state({player, is_oponent}) do
+    {Board.swap_player(player), !is_oponent}
+  end
 end

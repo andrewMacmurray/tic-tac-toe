@@ -71,10 +71,31 @@ defmodule TicTacToe.Board do
   end
 
   @doc """
+  Returns the status of the game
+  """
+  def status(board) do
+    cond do
+      winner?(board, :player_1) -> :player_1_win
+      winner?(board, :player_2) -> :player_2_win
+      full?(board)              -> :draw
+      true                      -> :non_terminal
+    end
+  end
+
+  @doc """
   Returns true if all the board tiles have been taken
   """
   def full?(board) do
     mvs = possible_moves(board) |> length()
     mvs == 0
   end
+
+  @doc """
+  Swaps player for the alternate one
+  """
+  def swap_player(:player_1), do: :player_2
+  def swap_player(:player_2), do: :player_1
+
+  def swap_symbol(:X), do: :O
+  def swap_symbol(:O), do: :X
 end

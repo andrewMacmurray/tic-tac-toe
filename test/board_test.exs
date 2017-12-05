@@ -48,12 +48,8 @@ defmodule BoardTest do
   end
 
   test "Board.moves returns the moves taken by a given player" do
-    board =
-      %Board{}
-      |> Board.update(1, :player_1)
-      |> Board.update(5, :player_2)
-      |> Board.update(9, :player_1)
-      |> Board.update(3, :player_2)
+    board = [1, 5, 9, 3] |> TestHelper.run_alternating_players(:player_1, %Board{})
+
     moves = board |> Board.moves(:player_1)
     assert moves == [1, 9]
 
@@ -95,6 +91,23 @@ defmodule BoardTest do
       p2_win = Board.winner?(b, :player_2)
       assert p2_win
     end
+  end
+
+  test "Board.status should check if a game has reached a terminal state" do
+    p1_win_board = [5,1,2,6,8] |> TestHelper.run_alternating_players(:player_1, %Board{})
+    actual   = Board.status(p1_win_board)
+    assert actual == :player_1_win
+
+    p2_win_board = [5,1,2,6,8] |> TestHelper.run_alternating_players(:player_2, %Board{})
+    actual   = Board.status(p2_win_board)
+    assert actual == :player_2_win
+
+    draw_board = [5,1,2,8,7,3,9,4,6] |> TestHelper.run_alternating_players(:player_1, %Board{})
+    actual = Board.status(draw_board)
+    assert actual == :draw
+
+    actual = Board.status(%Board{})
+    assert actual == :non_terminal
   end
 
   test "Board.full? returns true if all moves have been taken" do
