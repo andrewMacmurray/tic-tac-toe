@@ -4,6 +4,9 @@ defmodule TicTacToe do
   """
   alias TicTacToe.Console.{Controller, Options}
 
+  @doc """
+  Runs a Tic Tac Toe game
+  """
   def run do
     Options.get() |> Controller.run_game()
   end
