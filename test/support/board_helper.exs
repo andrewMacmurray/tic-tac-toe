@@ -12,11 +12,9 @@ defmodule BoardTestHelper do
   def run_alternating_players([], _, board), do: board
   def run_alternating_players([mv | moves], player, board) do
     new_b = Board.update(board, mv, player)
-    run_alternating_players(moves, swap(player), new_b)
+    run_alternating_players(moves, Board.swap_player(player), new_b)
   end
 
-  def swap(:player_1), do: :player_2
-  def swap(:player_2), do: :player_1
 
   # takes all board states ([[state]]) and adds a player to each
   # returns [[{move, player}]]
@@ -31,7 +29,7 @@ defmodule BoardTestHelper do
     else
       mvs         = Board.possible_moves(board)
       random_move = Enum.random(mvs)
-      new_b       = board |> Board.update(random_move, swap(ai_player))
+      new_b       = board |> Board.update(random_move, Board.swap_player(ai_player))
       if terminal?(new_b) do
         new_b
       else

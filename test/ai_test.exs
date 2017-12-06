@@ -43,7 +43,6 @@ defmodule AiTest do
     assert result == 8
   end
 
-  @tag :skip
   test "brute force random play, player_1 should never win" do
     board     = %Board{player_1: :X, player_2: :O} |> Board.update(5, :player_2)
     ai_player = :player_2
