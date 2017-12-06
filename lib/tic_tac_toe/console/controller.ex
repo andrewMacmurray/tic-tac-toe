@@ -5,7 +5,7 @@ defmodule TicTacToe.Console.Controller do
   alias IO.ANSI
 
   @doc """
-  Inits a game given options and runs it to its terminus
+  Inits a game with given options and runs it to its terminus
   """
   def run_game(options, io \\ IO) do
     options
@@ -26,7 +26,7 @@ defmodule TicTacToe.Console.Controller do
   """
   def handle_init(model, io \\ IO) do
     if model.next_player == model.ai_player do
-      clear_screen() |> io.puts()
+      clear_screen(io)
       model
     else
       player_init(model, io)
@@ -34,9 +34,8 @@ defmodule TicTacToe.Console.Controller do
   end
 
   defp player_init(model, io) do
-    clear_screen() |> io.puts()
-    render_model = View.render_init(model)
-    render_model |> io.puts()
+    clear_screen(io)
+    View.render_init(model) |> io.puts()
     model
   end
 
@@ -51,9 +50,8 @@ defmodule TicTacToe.Console.Controller do
   end
 
   defp terminus(model, io) do
-    clear_screen() |> io.puts()
-    render_model = View.render_terminus(model)
-    render_model |> io.puts()
+    clear_screen(io)
+    View.render_terminus(model) |> io.puts()
     model.game_status
   end
 
@@ -98,24 +96,21 @@ defmodule TicTacToe.Console.Controller do
   end
 
   defp invalid_guess(model, io) do
-    clear_screen() |> io.puts()
-    render_model = View.render_invalid(model)
-    render_model |> io.puts()
+    clear_screen(io)
+    View.render_invalid(model) |> io.puts()
     model
   end
 
   defp unrecognized_guess(model, io) do
-    clear_screen() |> io.puts()
-    render_model = View.render_unrecognized(model)
-    render_model |> io.puts()
+    clear_screen(io)
+    View.render_unrecognized(model) |> io.puts()
     model
   end
 
   defp valid_guess(guess, model, io) do
-    clear_screen() |> io.puts()
-    next_model   = Model.update(model, guess)
-    render_model = View.render_change(guess, model, next_model)
-    render_model |> io.puts()
+    clear_screen(io)
+    next_model = Model.update(model, guess)
+    View.render_change(guess, model, next_model) |> io.puts()
     next_model
   end
 
@@ -130,5 +125,5 @@ defmodule TicTacToe.Console.Controller do
     end
   end
 
-  def clear_screen, do: ANSI.format([:clear, :home])
+  def clear_screen(io), do: ANSI.format([:clear, :home]) |> io.puts()
 end

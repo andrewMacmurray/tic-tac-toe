@@ -44,7 +44,7 @@ defmodule TicTacToe.Model do
   end
 
   @doc """
-  Updates an existing game model with a guess and returns an updated model
+  Updates a game model with a guess and returns the new model
   """
   def update(model, guess) do
     %Model{

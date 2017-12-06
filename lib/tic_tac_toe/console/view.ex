@@ -16,36 +16,30 @@ defmodule TicTacToe.Console.View do
 
   defp standard_terminus(model) do
     [ render_board(model.board),
-      terminus_message(model.board)
+      standard_terminus_message(model.game_status)
     ]
     |> join_lines()
   end
 
   def human_computer_terminus(model) do
     [ render_board(model.board),
-      terminus_message(model.board, model.ai_player)
+      ai_terminus_message(model.game_status)
     ]
     |> join_lines()
   end
 
-  defp terminus_message(board, ai_player) do
-    case Board.status(board) do
-      :draw         -> Message.draw()
-      :player_1_win -> terminus_message_(:player_1, ai_player)
-      :player_2_win -> terminus_message_(:player_2, ai_player)
-    end
-  end
-
-  defp terminus_message(board) do
-    case Board.status(board) do
+  defp standard_terminus_message(game_status) do
+    case game_status do
       :draw  -> Message.draw()
       player -> Message.player_win(player)
     end
   end
 
-  def terminus_message_(_player, _ai_player) do
-    # User should never win
-    Message.computer_win()
+  defp ai_terminus_message(game_status) do
+    case game_status do
+      :draw -> Message.draw()
+      _     -> Message.computer_win() # User should never win
+    end
   end
 
   @doc """
