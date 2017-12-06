@@ -125,5 +125,5 @@ defmodule TicTacToe.Console.Controller do
     end
   end
 
-  def clear_screen(io), do: ANSI.format([:clear, :home]) |> io.puts()
+  defp clear_screen(io), do: ANSI.format([:clear, :home]) |> io.puts()
 end

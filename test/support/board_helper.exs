@@ -15,7 +15,6 @@ defmodule BoardTestHelper do
     run_alternating_players(moves, Board.swap_player(player), new_b)
   end
 
-
   # takes all board states ([[state]]) and adds a player to each
   # returns [[{move, player}]]
   def add_player_to_states(states, player) do

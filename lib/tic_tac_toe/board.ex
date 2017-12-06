@@ -91,11 +91,14 @@ defmodule TicTacToe.Board do
   end
 
   @doc """
-  Swaps player for the alternate one
+  Swaps player for alternate one
   """
   def swap_player(:player_1), do: :player_2
   def swap_player(:player_2), do: :player_1
 
+  @doc """
+  Swaps tile symbol for alternate one
+  """
   def swap_symbol(:X), do: :O
   def swap_symbol(:O), do: :X
 end
