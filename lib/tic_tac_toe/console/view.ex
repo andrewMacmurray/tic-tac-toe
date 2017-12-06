@@ -2,6 +2,7 @@ defmodule TicTacToe.Console.View do
   @moduledoc false
   alias TicTacToe.Board
   alias TicTacToe.Util.Message
+  alias IO.ANSI
 
   @doc """
   Renders the final state of a game to a string
@@ -169,9 +170,12 @@ defmodule TicTacToe.Console.View do
 
   def render_tile(tile) do
     case tile do
-      {_, :X}     -> "X"
-      {_, :O}     -> "O"
+      {_, :X}     -> bright_green("X")
+      {_, :O}     -> bright_blue("O")
       {n, :empty} -> "#{n}"
     end
   end
+
+  defp bright_green(str), do: ANSI.format([:bright, :green, str])
+  defp bright_blue(str),  do: ANSI.format([:bright, :blue, str])
 end

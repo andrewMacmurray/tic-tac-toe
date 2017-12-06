@@ -10,15 +10,18 @@ defmodule ViewTest do
       {{2, :O},     "O"}
     ]
     for {tile, expected} <- tiles do
-      assert View.render_tile(tile) == expected
+      actual = View.render_tile(tile) |> ViewTestHelper.strip_ansi()
+      assert actual == expected
     end
   end
 
   test "View.render_row should render a row correctly" do
     row = [{1, :X}, {2, :O}, {3, :empty}]
     expected = "   X   O   3"
-    assert View.render_row(row) == expected
+    actual   = View.render_row(row) |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
+
 
   test "View.render_board should render a board correctly" do
     expected = """
@@ -43,9 +46,12 @@ defmodule ViewTest do
     ---------------
     """
     |> String.trim()
-    board =
-      [1, 5, 2] |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
-    assert View.render_board(board) == expected
+    actual =
+      [1, 5, 2]
+      |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
+      |> View.render_board()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.move_summary should render human_v_human players correctly" do
@@ -102,6 +108,7 @@ defmodule ViewTest do
     assert View.move_summary(5, model) == expected
   end
 
+
   test "View.render_init should show first board and instructions for human_v_human" do
     expected = """
     ---------------
@@ -114,9 +121,13 @@ defmodule ViewTest do
     Your turn Player 1
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1})
-    assert View.render_init(model) == expected
+    actual =
+      Model.init({:human_v_human, :X, :player_1})
+      |> View.render_init()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
+
 
   test "View.render_init should show first board and instructions for computer_v_computer" do
     expected = """
@@ -130,9 +141,13 @@ defmodule ViewTest do
     Your turn Player 1
     """
     |> String.trim()
-    model = Model.init(:computer_v_computer)
-    assert View.render_init(model) == expected
+    actual =
+      Model.init(:computer_v_computer)
+      |> View.render_init()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
+
 
   test "View.render_init should show first board and instructions for human_v_computer" do
     expected = """
@@ -146,14 +161,18 @@ defmodule ViewTest do
     Your turn
     """
     |> String.trim()
-    model = Model.init({:human_v_computer, :X, :player_1})
-    assert View.render_init(model) == expected
+    actual =
+      Model.init({:human_v_computer, :X, :player_1})
+      |> View.render_init()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.render_init should show nothing if computer goes first" do
     model  = Model.init({:human_v_computer, :X, :player_2})
     assert View.render_init(model) == ""
   end
+
 
   test "View.render_change should render the board and a summary of the move made" do
     expected = """
@@ -168,10 +187,12 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    prev = Model.init({:human_v_human, :X, :player_1})
-    curr = prev |> Model.update(5)
-    assert View.render_change(5, prev, curr) == expected
+    prev   = Model.init({:human_v_human, :X, :player_1})
+    curr   = prev |> Model.update(5)
+    actual = View.render_change(5, prev, curr) |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
+
 
   test "View.render_change should render the board and a summary of the move made in a human_v_computer game" do
     expected = """
@@ -188,8 +209,10 @@ defmodule ViewTest do
     |> String.trim()
     prev = Model.init({:human_v_computer, :X, :player_1})
     curr = prev |> Model.update(5)
-    assert View.render_change(5, prev, curr) == expected
+    actual = View.render_change(5, prev, curr) |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
+
 
   test "View.render_unrecognized should render the board and a message that the user made an unrecognized guess for human_v_human" do
     expected = """
@@ -204,8 +227,11 @@ defmodule ViewTest do
     Please enter a number 1-9
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1})
-    assert View.render_unrecognized(model) == expected
+    actual =
+      Model.init({:human_v_human, :X, :player_1})
+      |> View.render_unrecognized()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.render_unrecognized should render the board and a message that the user made an unrecognized guess for human_v_computer" do
@@ -221,8 +247,11 @@ defmodule ViewTest do
     Please enter a number 1-9
     """
     |> String.trim()
-    model = Model.init({:human_v_computer, :X, :player_1})
-    assert View.render_unrecognized(model) == expected
+    actual =
+      Model.init({:human_v_computer, :X, :player_1})
+      |> View.render_unrecognized()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.render_invalid should render the board and a message that the user made an invalid guess for a human_v_human game" do
@@ -238,8 +267,12 @@ defmodule ViewTest do
     Please enter a valid guess
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1}) |> Model.update(5)
-    assert View.render_invalid(model) == expected
+    actual =
+      Model.init({:human_v_human, :X, :player_1})
+      |> Model.update(5)
+      |> View.render_invalid()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.render_invalid should render the board and a message that the user made an invalid guess for a human_v_computer game" do
@@ -255,8 +288,12 @@ defmodule ViewTest do
     Please enter a valid guess
     """
     |> String.trim()
-    model = Model.init({:human_v_computer, :O, :player_2}) |> Model.update(5)
-    assert View.render_invalid(model) == expected
+    actual =
+      Model.init({:human_v_computer, :O, :player_2})
+      |> Model.update(5)
+      |> View.render_invalid()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.render_terminus should render the result of a terminal human_v_human game" do
@@ -271,8 +308,12 @@ defmodule ViewTest do
     Player 1 won! 🎉
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1}) |> ModelTestHelper.sequence([5,2,1,3,9])
-    assert View.render_terminus(model) == expected
+    actual =
+      Model.init({:human_v_human, :X, :player_1})
+      |> ModelTestHelper.sequence([5,2,1,3,9])
+      |> View.render_terminus()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 
   test "View.render_terminus should render the result of a terminal human_v_computer game" do
@@ -287,7 +328,11 @@ defmodule ViewTest do
     You lost! 😢
     """
     |> String.trim()
-    model = Model.init({:human_v_computer, :O, :player_2}) |> ModelTestHelper.sequence([5,2,1,3,9])
-    assert View.render_terminus(model) == expected
+    actual =
+      Model.init({:human_v_computer, :O, :player_2})
+      |> ModelTestHelper.sequence([5,2,1,3,9])
+      |> View.render_terminus()
+      |> ViewTestHelper.strip_ansi()
+    assert actual == expected
   end
 end
