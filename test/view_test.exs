@@ -2,6 +2,7 @@ defmodule ViewTest do
   use ExUnit.Case
   alias TicTacToe.Console.{Model, View}
   alias TicTacToe.Board
+  alias IO.ANSI
 
   test "View.render_tile should render an individual tile" do
     tiles = [
@@ -51,6 +52,26 @@ defmodule ViewTest do
       |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
       |> View.render_board()
       |> ViewTestHelper.strip_ansi()
+    assert actual == expected
+  end
+
+  test "View.render_board renders tiles with correct colours" do
+    x = ANSI.format([:bright, :green, "X"])
+    o = ANSI.format([:bright, :blue, "O"])
+    expected = """
+    ---------------
+       #{x}   #{o}   3
+    ---+---+---+---
+       4   5   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    """
+    |> String.trim()
+    actual =
+      [1,2]
+      |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
+      |> View.render_board()
     assert actual == expected
   end
 
