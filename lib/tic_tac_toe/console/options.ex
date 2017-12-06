@@ -1,7 +1,6 @@
 defmodule TicTacToe.Console.Options do
   @moduledoc false
-  alias TicTacToe.Console.Message
-  import TicTacToe.Console.Util, only: [join_lines: 1]
+  alias TicTacToe.Util.Message
 
   @doc """
   greets the user and collects options for the game
@@ -21,7 +20,7 @@ defmodule TicTacToe.Console.Options do
       Message.welcome(),
       Message.divider()
     ]
-    |> join_lines()
+    |> Message.join_lines()
     |> io.puts()
   end
 
@@ -64,10 +63,10 @@ defmodule TicTacToe.Console.Options do
 
   def show_game_options(io \\ IO) do
     [
-      Message.game_types() |> join_lines(),
+      Message.game_types(),
       Message.divider()
     ]
-    |> join_lines()
+    |> Message.join_lines()
     |> io.puts()
   end
 

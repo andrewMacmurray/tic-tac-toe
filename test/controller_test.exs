@@ -1,7 +1,6 @@
-defmodule ConsoleControllerTest do
+defmodule ControllerTest do
   use ExUnit.Case
-  alias TicTacToe.Model
-  alias TicTacToe.Console.Controller
+  alias TicTacToe.Console.{Model, Controller}
   alias ModelTestHelper, as: TestHelper
 
   test "Controller.parse_guess! take a user guess and return a result" do

@@ -1,7 +1,7 @@
 defmodule TicTacToe.Console.Controller do
   @moduledoc false
-  alias TicTacToe.{Model, Board, AI}
-  alias TicTacToe.Console.View
+  alias TicTacToe.{Board, AI}
+  alias TicTacToe.Console.{View, Model}
 
   @doc """
   Inits a game with given options and runs it to its terminus

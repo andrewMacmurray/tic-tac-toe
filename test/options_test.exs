@@ -1,4 +1,4 @@
-defmodule ConsoleOptionsTest do
+defmodule OptionsTest do
   use ExUnit.Case
   alias TicTacToe.Console.Options
 

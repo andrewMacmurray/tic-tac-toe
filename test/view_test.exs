@@ -1,7 +1,7 @@
-defmodule ConsoleViewTest do
+defmodule ViewTest do
   use ExUnit.Case
-  alias TicTacToe.Console.View
-  alias TicTacToe.{Board, Model}
+  alias TicTacToe.Console.{Model, View}
+  alias TicTacToe.Board
 
   test "View.render_tile should render an individual tile" do
     tiles = [

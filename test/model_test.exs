@@ -1,6 +1,7 @@
 defmodule ModelTest do
   use ExUnit.Case
-  alias TicTacToe.{Model, Board}
+  alias TicTacToe.Board
+  alias TicTacToe.Console.Model
   alias BoardTestHelper, as: TestHelper
 
   test "Model.init should take a tuple of options for human_v_human and return a correct Model struct" do

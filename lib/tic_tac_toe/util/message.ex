@@ -1,4 +1,4 @@
-defmodule TicTacToe.Console.Message do
+defmodule TicTacToe.Util.Message do
   @moduledoc false
   def welcome, do: "Welcome to Tic Tac Toe! 👾  👾  👾"
 
@@ -11,6 +11,7 @@ defmodule TicTacToe.Console.Message do
       "2. Computer vs Computer  🤖  vs 🤖",
       "3. Human vs Computer     💁  vs 🤖"
     ]
+    |> join_lines()
   end
 
   def enter_game_option, do: "Enter 1, 2 or 3: "
@@ -52,4 +53,9 @@ defmodule TicTacToe.Console.Message do
   def draw,         do: "It's a draw!"
   def user_win,     do: "You won! 🎉"
   def computer_win, do: "You lost! 😢"
+
+  @doc """
+  Joins a list of strings together with a new line
+  """
+  def join_lines(xs), do: Enum.join(xs, "\n")
 end

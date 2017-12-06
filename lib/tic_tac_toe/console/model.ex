@@ -1,4 +1,4 @@
-defmodule TicTacToe.Model do
+defmodule TicTacToe.Console.Model do
   @moduledoc false
   defstruct [
     :game_type,
@@ -8,7 +8,8 @@ defmodule TicTacToe.Model do
     game_status: :non_terminal
   ]
 
-  alias TicTacToe.{Model, Board}
+  alias TicTacToe.Board
+  alias TicTacToe.Console.Model
 
   @doc """
   Initialises a game for a given config
