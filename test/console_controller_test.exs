@@ -2,6 +2,7 @@ defmodule ConsoleControllerTest do
   use ExUnit.Case
   alias TicTacToe.Model
   alias TicTacToe.Console.Controller
+  alias ModelTestHelper, as: TestHelper
 
   test "Controller.parse_guess! take a user guess and return a result" do
     expected = 3
@@ -78,8 +79,7 @@ defmodule ConsoleControllerTest do
 
     initial_model =
       Model.init({:human_v_computer, :X, :player_1})
-      |> Model.update(5)
-      |> Model.update(1)
+      |> TestHelper.sequence([5, 1])
     actual = Controller.handle_guess(initial_model, IOGuess5)
     assert actual == initial_model
   end
@@ -108,49 +108,35 @@ defmodule ConsoleControllerTest do
   end
 
   test "Controller.handle_terminus should handle and return terminal model for human_v_human game" do
-    initial = Model.init({:human_v_human, :X, :player_1})
-    model = [5,1,2,4,8] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init({:human_v_human, :X, :player_1}) |> TestHelper.sequence([5,1,2,4,8])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :player_1_win
 
-    initial = Model.init({:human_v_human, :X, :player_1})
-    model = [5,1,2,8,9,3,6,4,7] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init({:human_v_human, :X, :player_1}) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :draw
   end
 
   test "Controller.handle_terminus should handle and return terminal model for computer_v_computer game" do
-    initial = Model.init(:computer_v_computer)
-    model = [5,1,2,4,8] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init(:computer_v_computer) |> TestHelper.sequence([5,1,2,4,8])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :player_1_win
 
-    initial = Model.init(:computer_v_computer)
-    model = [5,1,2,8,9,3,6,4,7] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init(:computer_v_computer) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :draw
   end
 
   test "Controller.handle_terminus should handle and return terminal model for human_v_computer game" do
-    initial = Model.init({:human_v_computer, :X, :player_1})
-    model = [5,1,2,8,9,3,6,4,7] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init({:human_v_computer, :X, :player_1}) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :draw
 
-    initial = Model.init({:human_v_computer, :O, :player_2})
-    model = [5,1,2,3,8] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init({:human_v_computer, :O, :player_2}) |> TestHelper.sequence([5,1,2,3,8])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :player_1_win
 
-    initial = Model.init({:human_v_computer, :O, :player_1})
-    model = [1,5,9,2,3,8] |> Enum.reduce(initial, fn(x, acc) -> Model.update(acc, x) end)
-
+    model = Model.init({:human_v_computer, :O, :player_1}) |> TestHelper.sequence([1,5,9,2,3,8])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :player_2_win
   end

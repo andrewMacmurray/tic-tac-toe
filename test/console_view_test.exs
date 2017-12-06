@@ -2,7 +2,6 @@ defmodule ConsoleViewTest do
   use ExUnit.Case
   alias TicTacToe.Console.View
   alias TicTacToe.{Board, Model}
-  alias BoardTestHelper, as: TestHelper
 
   test "View.render_tile should render an individual tile" do
     tiles = [
@@ -45,7 +44,7 @@ defmodule ConsoleViewTest do
     """
     |> String.trim()
     board =
-      [1, 5, 2] |> TestHelper.run_alternating_players(:player_1, %Board{})
+      [1, 5, 2] |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
     assert View.render_board(board) == expected
   end
 
@@ -272,12 +271,7 @@ defmodule ConsoleViewTest do
     Player 1 won! 🎉
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1})
-      |> Model.update(5)
-      |> Model.update(2)
-      |> Model.update(1)
-      |> Model.update(3)
-      |> Model.update(9)
+    model = Model.init({:human_v_human, :X, :player_1}) |> ModelTestHelper.sequence([5,2,1,3,9])
     assert View.render_terminus(model) == expected
   end
 
@@ -293,12 +287,7 @@ defmodule ConsoleViewTest do
     You lost! 😢
     """
     |> String.trim()
-    model = Model.init({:human_v_computer, :O, :player_2})
-      |> Model.update(5)
-      |> Model.update(2)
-      |> Model.update(1)
-      |> Model.update(3)
-      |> Model.update(9)
+    model = Model.init({:human_v_computer, :O, :player_2}) |> ModelTestHelper.sequence([5,2,1,3,9])
     assert View.render_terminus(model) == expected
   end
 end

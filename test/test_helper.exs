@@ -1,6 +1,7 @@
 helper_files = [
   "fake_io.exs",
-  "board_helper.exs"
+  "board_helper.exs",
+  "model_helper.exs"
 ]
 
 for f <- helper_files do
