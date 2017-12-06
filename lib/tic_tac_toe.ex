@@ -5,6 +5,11 @@ defmodule TicTacToe do
   alias TicTacToe.Console.{Controller, Options}
 
   @doc """
+  Entry function for command line executable
+  """
+  def main(_argv), do: run()
+
+  @doc """
   Runs a Tic Tac Toe game
   """
   def run do

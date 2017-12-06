@@ -6,6 +6,8 @@ A command line game of Tic Tac Toe
 
 ## Playing the game
 
+### In iex
+
 To start the game, clone the repo, cd into it and begin an iex shell:
 
 ```sh
@@ -13,6 +15,20 @@ To start the game, clone the repo, cd into it and begin an iex shell:
 ```
 
 Then run `TicTacToe.run()` and follow the game instructions
+
+### As an executable
+
+An executable can also be built by running
+
+```sh
+> mix escript.build
+```
+
+And then run the game with
+
+```sh
+> ./tic_tac_toe
+```
 
 ## Running the tests
 

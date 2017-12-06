@@ -5,6 +5,7 @@ defmodule TicTacToe.Mixfile do
     [app: :tic_tac_toe,
      version: "0.1.0",
      elixir: "~> 1.4",
+     escript: [main_module: TicTacToe],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      test_coverage: [tool: ExCoveralls],
