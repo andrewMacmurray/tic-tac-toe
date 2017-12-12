@@ -3,7 +3,7 @@ defmodule TicTacToe.Console.Options do
   alias TicTacToe.Util.Message
 
   @doc """
-  Prompst user for game options
+  Prompts user for game options
   """
   def get(io \\ IO) do
     case get_game_option(io) do
