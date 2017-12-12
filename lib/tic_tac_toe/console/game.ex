@@ -1,4 +1,4 @@
-defmodule TicTacToe.Console.Controller do
+defmodule TicTacToe.Console.Game do
   @moduledoc false
   alias TicTacToe.{Board, AI}
   alias TicTacToe.Console.{Model, View}
@@ -7,7 +7,7 @@ defmodule TicTacToe.Console.Controller do
   @doc """
   Inits a game with given options and runs it to its terminus
   """
-  def run_game(options, {io, process} \\ {IO, Process}) do
+  def run(options, {io, process} \\ {IO, Process}) do
     options
     |> Model.init()
     |> init(io)

@@ -9,9 +9,8 @@ defmodule TicTacToe.Console.Options do
     greet(io)
     opt = get_game_option(io)
     case opt do
-      :human_v_computer    -> human_v_computer(io)
-      :human_v_human       -> :human_v_human
-      :computer_v_computer -> :computer_v_computer
+      :human_v_computer -> human_v_computer(io)
+      _                 -> opt
     end
   end
 
