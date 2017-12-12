@@ -122,13 +122,14 @@ defmodule OptionsTest do
   end
 
   test "Options.get should greet the user and parse all input into correct game options" do
-    result = Options.get(OptionIO3)
-    assert result == {:human_v_computer, :X, :player_1}
-
-    result = Options.get(OptionIO1)
-    assert result == :human_v_human
-
-    result = Options.get(OptionIO2)
-    assert result == :computer_v_computer
+    states = [
+      {OptionIO3, {:human_v_computer, :X, :player_1}},
+      {OptionIO1, :human_v_human},
+      {OptionIO2, :computer_v_computer}
+    ]
+    for {effect_module, expected} <- states do
+      result = Options.get(effect_module)
+      assert result == expected
+    end
   end
 end
