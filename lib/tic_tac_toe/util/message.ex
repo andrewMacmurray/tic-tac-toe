@@ -55,6 +55,9 @@ defmodule TicTacToe.Util.Message do
   def user_win,     do: "You won! 🎉"
   def computer_win, do: "You lost! 😢"
 
+  def play_again, do: "Do you want to play another game?"
+  def goodbye,    do: "Ok bye! 👋"
+
   @doc """
   Joins a list of strings together with a new line
   """

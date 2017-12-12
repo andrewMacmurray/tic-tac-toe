@@ -98,11 +98,19 @@ defmodule TicTacToe.Console.Options do
   end
 
   def parse_player!(input) do
+    case parse_yes_no!(input) do
+      :yes -> :player_1
+      :no  -> :player_2
+      _    -> :error
+    end
+  end
+
+  def parse_yes_no!(input) do
     case format_input(input) do
-      "Y"   -> :player_1
-      "YES" -> :player_1
-      "N"   -> :player_2
-      "NO"  -> :player_2
+      "Y"   -> :yes
+      "YES" -> :yes
+      "N"   -> :no
+      "NO"  -> :no
       _     -> :error
     end
   end

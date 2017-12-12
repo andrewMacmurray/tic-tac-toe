@@ -11,6 +11,7 @@ end
 defmodule OptionIO2 do
   def puts(message),             do: message
   def gets("Enter 1, 2 or 3: "), do: "2\n"
+  def gets("Enter Y or N: "),    do: "n\n"
 end
 
 defmodule OptionIO3 do

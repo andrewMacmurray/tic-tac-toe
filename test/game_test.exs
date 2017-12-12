@@ -1,6 +1,7 @@
 defmodule GameTest do
   use ExUnit.Case
   alias TicTacToe.Console.{Model, Game}
+  alias TicTacToe.Util.Message
   alias ModelTestHelper, as: TestHelper
 
   test "Game.greet_user should print a greeting to the console" do
@@ -14,7 +15,7 @@ defmodule GameTest do
     end
   end
 
-  test "Game.parse_guess! take a user guess and return a result" do
+  test "Game.parse_guess! takes a user guess and return a result" do
     guesses = [
       {"3\n",    3},
       {"hello?", :error}
@@ -122,8 +123,18 @@ defmodule GameTest do
     end
   end
 
-  test "Game.run runs a game to its terminus" do
+  test "Game.play_again promps user if they'd like to play and runs given function if yes" do
+    actual = Game.play_again(fn _ -> :play_again end, {OptionIOYes, FakeProcess})
+    assert actual == :play_again
+  end
+
+  test "Game.play_again prints goodbye message if user enters no" do
+    actual = Game.play_again(fn _ -> :dont_print_me end, {OptionIONo, FakeProcess})
+    assert actual == Message.goodbye()
+  end
+
+  test "Game.run runs a game to its terminus and can opt out of playing another game" do
     # computer_v_computer game run to it's terminus
-    assert Game.run({OptionIO2, FakeProcess}) == :draw
+    assert Game.run({OptionIO2, FakeProcess}) == Message.goodbye()
   end
 end

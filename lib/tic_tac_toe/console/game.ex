@@ -2,6 +2,7 @@ defmodule TicTacToe.Console.Game do
   @moduledoc false
   alias TicTacToe.{Board, AI}
   alias TicTacToe.Console.{Model, View, Options}
+  alias TicTacToe.Util.Message
   alias IO.ANSI
 
   @doc """
@@ -11,13 +12,26 @@ defmodule TicTacToe.Console.Game do
     Options.get(io)
     |> Model.init()
     |> init(io)
-    |> loop({io, process})
+    |> guess_loop({io, process})
+    play_again(&run/1, {io, process})
   end
 
-  def loop(model, {io, process}) do
+  def guess_loop(model, {io, process}) do
     case model.game_status do
-      :non_terminal -> handle_guess(model, {io, process}) |> loop({io, process})
+      :non_terminal -> handle_guess(model, {io, process}) |> guess_loop({io, process})
       _             -> terminus(model, io)
+    end
+  end
+
+  def play_again(play_func, {io, process}) do
+    Message.play_again() |> io.puts()
+    res = prompt_go_again(io)
+    case res do
+      :yes ->
+        clear_screen(io)
+        play_func.({io, process})
+      :no ->
+        Message.goodbye() |> io.puts()
     end
   end
 
@@ -109,6 +123,17 @@ defmodule TicTacToe.Console.Game do
 
   defp prompt_guess(io) do
     io.gets("> ") |> parse_guess!()
+  end
+
+  defp prompt_go_again(io) do
+    prompt_go_again_(io)
+    |> Options.retry_on_error(&prompt_go_again/1, io)
+  end
+
+  defp prompt_go_again_(io) do
+    Message.yes_no()
+    |> io.gets()
+    |> Options.parse_yes_no!()
   end
 
   def parse_guess!(guess) do
