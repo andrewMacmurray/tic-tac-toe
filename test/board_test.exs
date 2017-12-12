@@ -94,20 +94,17 @@ defmodule BoardTest do
   end
 
   test "Board.status should check if a game has reached a terminal state" do
-    p1_win_board = [5,1,2,6,8] |> TestHelper.run_alternating_players(:player_1, %Board{})
-    actual   = Board.status(p1_win_board)
-    assert actual == :player_1_win
-
-    p2_win_board = [5,1,2,6,8] |> TestHelper.run_alternating_players(:player_2, %Board{})
-    actual   = Board.status(p2_win_board)
-    assert actual == :player_2_win
-
-    draw_board = [5,1,2,8,7,3,9,4,6] |> TestHelper.run_alternating_players(:player_1, %Board{})
-    actual = Board.status(draw_board)
-    assert actual == :draw
-
-    actual = Board.status(%Board{})
-    assert actual == :non_terminal
+    states = [
+      {[5,1,2,6,8],         :player_1, :player_1_win},
+      {[5,1,2,6,8],         :player_2, :player_2_win},
+      {[5,1,2,8,7,3,9,4,6], :player_1, :draw},
+      {[],                  :player_1, :non_terminal}
+    ]
+    for {sequence, first_player, expected} <- states do
+      board  = sequence |> TestHelper.run_alternating_players(first_player, %Board{})
+      actual = Board.status(board)
+      assert actual == expected
+    end
   end
 
   test "Board.full? returns true if all moves have been taken" do
