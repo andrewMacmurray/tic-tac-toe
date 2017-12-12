@@ -13,21 +13,21 @@ defmodule ControllerTest do
     assert actual == expected
   end
 
-  test "Controller.handle_init should print the initial model and return the model unmodified" do
+  test "Controller.init should print the initial model and return the model unmodified" do
     model = Model.init(:human_v_human)
-    actual = Controller.handle_init(model, FakeIO)
+    actual = Controller.init(model, FakeIO)
     assert actual == model
 
     model = Model.init(:computer_v_computer)
-    actual = Controller.handle_init(model, FakeIO)
+    actual = Controller.init(model, FakeIO)
     assert actual == model
 
     model = Model.init({:human_v_computer, :X, :player_1})
-    actual = Controller.handle_init(model, FakeIO)
+    actual = Controller.init(model, FakeIO)
     assert actual == model
 
     model = Model.init({:human_v_computer, :O, :player_2})
-    actual = Controller.handle_init(model, FakeIO)
+    actual = Controller.init(model, FakeIO)
     assert actual == model
   end
 
@@ -38,7 +38,7 @@ defmodule ControllerTest do
     guess = 5
 
     expected = Model.update(model, guess)
-    actual   = Controller.handle_guess(model, IOGuess5)
+    actual   = Controller.handle_guess(model, {IOGuess5, FakeProcess})
     assert actual == expected
   end
 
@@ -46,20 +46,20 @@ defmodule ControllerTest do
         if an unrecognised guess is given" do
     original_model = Model.init(:human_v_human)
 
-    actual = Controller.handle_guess(original_model, IOGuessUnrecognized)
+    actual = Controller.handle_guess(original_model, {IOGuessUnrecognized, FakeProcess})
     assert actual == original_model
   end
 
   test "If a move has already been taken should return the original model" do
     original_model = Model.init(:human_v_human) |> Model.update(5)
-    actual = Controller.handle_guess(original_model, IOGuess5)
+    actual = Controller.handle_guess(original_model, {IOGuess5, FakeProcess})
 
     assert actual == original_model
   end
 
   test "Controller.handle_guess should return a new model for a :computer_v_computer game" do
     initial_model = Model.init(:computer_v_computer)
-    actual = Controller.handle_guess(initial_model, FakeIO)
+    actual = Controller.handle_guess(initial_model, {FakeIO, FakeProcess})
 
     expected = Model.update(initial_model, 5)
     assert actual == expected
@@ -68,25 +68,25 @@ defmodule ControllerTest do
   test "Controller.handle_guess should return a new model for a :human_v_computer game
         where human guesses first" do
     initial_model = Model.init({:human_v_computer, :X, :player_1})
-    actual = Controller.handle_guess(initial_model, IOGuess9)
+    actual = Controller.handle_guess(initial_model, {IOGuess9, FakeProcess})
     expected = Model.update(initial_model, 9)
     assert actual == expected
 
     initial_model = Model.init({:human_v_computer, :X, :player_1})
-    actual = Controller.handle_guess(initial_model, IOGuessUnrecognized)
+    actual = Controller.handle_guess(initial_model, {IOGuessUnrecognized, FakeProcess})
     assert actual == initial_model
 
     initial_model =
       Model.init({:human_v_computer, :X, :player_1})
       |> TestHelper.sequence([5, 1])
-    actual = Controller.handle_guess(initial_model, IOGuess5)
+    actual = Controller.handle_guess(initial_model, {IOGuess5, FakeProcess})
     assert actual == initial_model
   end
 
   test "Controller.handle_guess should return a new model for a :human_v_computer game
         where computer guesses first" do
     initial_model = Model.init({:human_v_computer, :O, :player_2})
-    actual        = Controller.handle_guess(initial_model, FakeIO)
+    actual        = Controller.handle_guess(initial_model, {FakeIO, FakeProcess})
 
     expected = Model.update(initial_model, 5)
     assert actual == expected
@@ -128,6 +128,6 @@ defmodule ControllerTest do
   end
 
   test "Controller.run_game runs a game to its terminus" do
-    assert Controller.run_game(:computer_v_computer, FakeIO) == :draw
+    assert Controller.run_game(:computer_v_computer, {FakeIO, FakeProcess}) == :draw
   end
 end

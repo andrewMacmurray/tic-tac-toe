@@ -7,16 +7,16 @@ defmodule TicTacToe.Console.Controller do
   @doc """
   Inits a game with given options and runs it to its terminus
   """
-  def run_game(options, io \\ IO) do
+  def run_game(options, {io, process} \\ {IO, Process}) do
     options
     |> Model.init()
-    |> handle_init(io)
-    |> loop(io)
+    |> init(io)
+    |> loop({io, process})
   end
 
-  def loop(model, io) do
+  def loop(model, {io, process}) do
     case model.game_status do
-      :non_terminal -> handle_guess(model, io) |> loop(io)
+      :non_terminal -> handle_guess(model, {io, process}) |> loop({io, process})
       _             -> terminus(model, io)
     end
   end
@@ -24,16 +24,7 @@ defmodule TicTacToe.Console.Controller do
   @doc """
   Handles the beginning of the game
   """
-  def handle_init(model, io \\ IO) do
-    if model.next_player == model.ai_player do
-      clear_screen(io)
-      model
-    else
-      player_init(model, io)
-    end
-  end
-
-  defp player_init(model, io) do
+  def init(model, io \\ IO) do
     clear_screen(io)
     View.render_init(model) |> io.puts()
     model
@@ -51,16 +42,17 @@ defmodule TicTacToe.Console.Controller do
   @doc """
   Handles the next move
   """
-  def handle_guess(model, io \\ IO) do
+  def handle_guess(model, {io, process} \\ {IO, Process}) do
     case model.game_type do
       :human_v_human       -> human_guess(model, io)
-      :computer_v_computer -> computer_computer_guess(model, io)
-      :human_v_computer    -> human_computer_guess(model, io)
+      :computer_v_computer -> computer_computer_guess(model, {io, process})
+      :human_v_computer    -> human_computer_guess(model, {io, process})
     end
   end
 
-  defp human_computer_guess(model, io) do
+  defp human_computer_guess(model, {io, process}) do
     if model.next_player == model.ai_player do
+      process.sleep(1500)
       guess = AI.run(model.board, model.ai_player)
       valid_guess(guess, model, io)
     else
@@ -68,7 +60,8 @@ defmodule TicTacToe.Console.Controller do
     end
   end
 
-  defp computer_computer_guess(model, io) do
+  defp computer_computer_guess(model, {io, process}) do
+    process.sleep(1000)
     guess = AI.run(model.board, model.next_player)
     valid_guess(guess, model, io)
   end

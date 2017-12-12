@@ -189,11 +189,21 @@ defmodule ViewTest do
     assert actual == expected
   end
 
-  test "View.render_init should show nothing if computer goes first" do
+  test "View.render_init should render board and message if computer goes first" do
+    expected = """
+    ---------------
+       1   2   3
+    ---+---+---+---
+       4   5   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    I'll go first, let me think...
+    """
+    |> String.trim()
     model  = Model.init({:human_v_computer, :X, :player_2})
-    assert View.render_init(model) == ""
+    assert View.render_init(model) == expected
   end
-
 
   test "View.render_change should render the board and a summary of the move made" do
     expected = """
