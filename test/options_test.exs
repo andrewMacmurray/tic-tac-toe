@@ -2,17 +2,6 @@ defmodule OptionsTest do
   use ExUnit.Case
   alias TicTacToe.Console.Options
 
-  test "Options.greet should welcome the user" do
-    result = Options.greet(OptionIO1)
-    greeting_messages = [
-      "Welcome to Tic Tac Toe",
-      "----------------------"
-    ]
-    for message <- greeting_messages do
-      assert result =~ message
-    end
-  end
-
   test "Options.show_game_options should print the possible game types" do
     result = Options.show_game_options(OptionIO1)
     messages = [

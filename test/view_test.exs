@@ -75,6 +75,17 @@ defmodule ViewTest do
     assert actual == expected
   end
 
+  test "View.render_greeting should render a user greeting" do
+    result = View.render_greeting()
+    greeting_messages = [
+      "Welcome to Tic Tac Toe",
+      "----------------------"
+    ]
+    for message <- greeting_messages do
+      assert result =~ message
+    end
+  end
+
   test "View.move_summary should render human_v_human players correctly" do
     expected = """
     Player 1 took tile 3

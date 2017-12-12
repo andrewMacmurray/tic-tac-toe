@@ -3,6 +3,17 @@ defmodule GameTest do
   alias TicTacToe.Console.{Model, Game}
   alias ModelTestHelper, as: TestHelper
 
+  test "Game.greet_user should print a greeting to the console" do
+    result = Game.greet_user(FakeIO)
+    greeting_messages = [
+      "Welcome to Tic Tac Toe",
+      "----------------------"
+    ]
+    for message <- greeting_messages do
+      assert result =~ message
+    end
+  end
+
   test "Game.parse_guess! take a user guess and return a result" do
     guesses = [
       {"3\n",    3},
@@ -112,6 +123,7 @@ defmodule GameTest do
   end
 
   test "Game.run runs a game to its terminus" do
-    assert Game.run(:computer_v_computer, {FakeIO, FakeProcess}) == :draw
+    # computer_v_computer game run to it's terminus
+    assert Game.run({OptionIO2, FakeProcess}) == :draw
   end
 end

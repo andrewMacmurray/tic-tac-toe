@@ -141,6 +141,17 @@ defmodule TicTacToe.Console.View do
     end
   end
 
+  @doc """
+  Renders initial greeting for user
+  """
+  def render_greeting do
+    [
+      Message.welcome(),
+      Message.divider()
+    ]
+    |> Message.join_lines()
+  end
+
   def render_board(%Board{tiles: tiles}) do
     tiles
     |> Enum.to_list()

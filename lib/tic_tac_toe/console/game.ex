@@ -1,14 +1,14 @@
 defmodule TicTacToe.Console.Game do
   @moduledoc false
   alias TicTacToe.{Board, AI}
-  alias TicTacToe.Console.{Model, View}
+  alias TicTacToe.Console.{Model, View, Options}
   alias IO.ANSI
 
   @doc """
-  Inits a game with given options and runs it to its terminus
+  Inits a game with user options and runs it to its terminus
   """
-  def run(options, {io, process} \\ {IO, Process}) do
-    options
+  def run({io, process} \\ {IO, Process}) do
+    Options.get(io)
     |> Model.init()
     |> init(io)
     |> loop({io, process})
@@ -19,6 +19,13 @@ defmodule TicTacToe.Console.Game do
       :non_terminal -> handle_guess(model, {io, process}) |> loop({io, process})
       _             -> terminus(model, io)
     end
+  end
+
+  @doc """
+  Greets the user
+  """
+  def greet_user(io \\ IO) do
+    View.render_greeting() |> io.puts()
   end
 
   @doc """

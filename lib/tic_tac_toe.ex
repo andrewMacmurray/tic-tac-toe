@@ -2,7 +2,7 @@ defmodule TicTacToe do
   @moduledoc """
   Tic Tac Toe Game
   """
-  alias TicTacToe.Console.{Game, Options}
+  alias TicTacToe.Console.Game
 
   @doc """
   Entry function for command line executable
@@ -13,6 +13,7 @@ defmodule TicTacToe do
   Runs a Tic Tac Toe game
   """
   def run do
-    Options.get() |> Game.run()
+    Game.greet_user()
+    Game.run()
   end
 end

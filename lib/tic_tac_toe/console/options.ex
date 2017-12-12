@@ -3,24 +3,13 @@ defmodule TicTacToe.Console.Options do
   alias TicTacToe.Util.Message
 
   @doc """
-  greets the user and collects options for the game
+  Prompst user for game options
   """
   def get(io \\ IO) do
-    greet(io)
-    opt = get_game_option(io)
-    case opt do
+    case get_game_option(io) do
       :human_v_computer -> human_v_computer(io)
-      _                 -> opt
+      opt               -> opt
     end
-  end
-
-  def greet(io \\ IO) do
-    [
-      Message.welcome(),
-      Message.divider()
-    ]
-    |> Message.join_lines()
-    |> io.puts()
   end
 
   def human_v_computer(io \\ IO) do
