@@ -20,6 +20,16 @@ defmodule OptionIO3 do
   def gets("Enter Y or N: "),    do: "y\n"
 end
 
+defmodule OptionIOYes do
+  def puts(message), do: message
+  def gets("Enter Y or N: "), do: "y\n"
+end
+
+defmodule OptionIONo do
+  def puts(message), do: message
+  def gets("Enter Y or N: "), do: "n\n"
+end
+
 defmodule IOGuess5 do
   def puts(message), do: message
   def gets("> "),    do: "5\n"

@@ -34,7 +34,7 @@ defmodule TicTacToe.Console.Options do
     show_game_options(io)
     Message.enter_game_option()
     |> io.gets()
-    |> parse_game_option()
+    |> parse_game_option!()
   end
 
   def show_game_options(io \\ IO) do
@@ -54,7 +54,7 @@ defmodule TicTacToe.Console.Options do
   defp get_tile_symbol_(io) do
     Message.enter_tile_symbol()
     |> io.gets()
-    |> parse_tile_symbol()
+    |> parse_tile_symbol!()
   end
 
   def get_player(io \\ IO) do
@@ -66,7 +66,7 @@ defmodule TicTacToe.Console.Options do
     Message.player() |> io.puts()
     Message.yes_no()
     |> io.gets()
-    |> parse_player()
+    |> parse_player!()
   end
 
   def retry_on_error(result, func, io \\ IO) do
@@ -79,7 +79,7 @@ defmodule TicTacToe.Console.Options do
     end
   end
 
-  def parse_game_option(input) do
+  def parse_game_option!(input) do
     case String.trim(input) do
       "1" -> :human_v_human
       "2" -> :computer_v_computer
@@ -88,7 +88,7 @@ defmodule TicTacToe.Console.Options do
     end
   end
 
-  def parse_tile_symbol(input) do
+  def parse_tile_symbol!(input) do
     case format_input(input) do
       "X" -> :X
       "O" -> :O
@@ -97,7 +97,7 @@ defmodule TicTacToe.Console.Options do
     end
   end
 
-  def parse_player(input) do
+  def parse_player!(input) do
     case format_input(input) do
       "Y"   -> :player_1
       "YES" -> :player_1

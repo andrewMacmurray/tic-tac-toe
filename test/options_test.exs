@@ -16,7 +16,7 @@ defmodule OptionsTest do
     end
   end
 
-  test "Options.parse_game_option should parse user input into a game option" do
+  test "Options.parse_game_option! should parse user input into a game option" do
     inputs = [
       {"1\n",    :human_v_human},
       {"1     ", :human_v_human},
@@ -25,13 +25,13 @@ defmodule OptionsTest do
       {"3\n",    :human_v_computer}
     ]
     for {input, expected} <- inputs do
-      assert Options.parse_game_option(input) == expected
+      assert Options.parse_game_option!(input) == expected
     end
   end
 
-  test "Options.parse_game_option should return :error for unrecognized input" do
+  test "Options.parse_game_option! should return :error for unrecognized input" do
     input = "hello?"
-    result = Options.parse_game_option(input)
+    result = Options.parse_game_option!(input)
     assert result == :error
   end
 
@@ -40,7 +40,7 @@ defmodule OptionsTest do
     assert result == :human_v_computer
   end
 
-  test "Options.parse_tile_symbol should parse user input into a tile type" do
+  test "Options.parse_tile_symbol! should parse user input into a tile type" do
     inputs = [
       {"X\n",      :X},
       {"x\n",      :X},
@@ -51,13 +51,13 @@ defmodule OptionsTest do
       {"0\n",      :O}
     ]
     for {input, expected} <- inputs do
-      assert Options.parse_tile_symbol(input) == expected
+      assert Options.parse_tile_symbol!(input) == expected
     end
   end
 
-  test "Options.parse_tile_symbol should return :error for unrecognized input" do
+  test "Options.parse_tile_symbol! should return :error for unrecognized input" do
     input = "U"
-    result = Options.parse_tile_symbol(input)
+    result = Options.parse_tile_symbol!(input)
     assert result == :error
   end
 
@@ -66,7 +66,7 @@ defmodule OptionsTest do
     assert result == :X
   end
 
-  test "Options.parse_player should parse user input into player_1 or player_2" do
+  test "Options.parse_player! should parse user input into player_1 or player_2" do
     inputs = [
       {"Y\n",     :player_1},
       {"y\n",     :player_1},
@@ -80,13 +80,13 @@ defmodule OptionsTest do
       {"n    \n", :player_2},
     ]
     for {input, expected} <- inputs do
-      assert Options.parse_player(input) == expected
+      assert Options.parse_player!(input) == expected
     end
   end
 
-  test "Options.parse_player should return :error for unrecognized input" do
+  test "Options.parse_player! should return :error for unrecognized input" do
     input = "What?"
-    result = Options.parse_player(input)
+    result = Options.parse_player!(input)
     assert result == :error
   end
 
