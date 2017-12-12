@@ -14,7 +14,7 @@ defmodule ControllerTest do
   end
 
   test "Controller.handle_init should print the initial model and return the model unmodified" do
-    model = Model.init({:human_v_human, :X, :player_1})
+    model = Model.init(:human_v_human)
     actual = Controller.handle_init(model, FakeIO)
     assert actual == model
 
@@ -34,7 +34,7 @@ defmodule ControllerTest do
   test "Controller.handle_guess should take a game model for human_v_human,
         prompt the user for a guess
         and correctly update model" do
-    model = Model.init({:human_v_human, :X, :player_1})
+    model = Model.init(:human_v_human)
     guess = 5
 
     expected = Model.update(model, guess)
@@ -44,14 +44,14 @@ defmodule ControllerTest do
 
   test "Controller.handle_guess should return the original model
         if an unrecognised guess is given" do
-    original_model = Model.init({:human_v_human, :X, :player_1})
+    original_model = Model.init(:human_v_human)
 
     actual = Controller.handle_guess(original_model, IOGuessUnrecognized)
     assert actual == original_model
   end
 
   test "If a move has already been taken should return the original model" do
-    original_model = Model.init({:human_v_human, :X, :player_1}) |> Model.update(5)
+    original_model = Model.init(:human_v_human) |> Model.update(5)
     actual = Controller.handle_guess(original_model, IOGuess5)
 
     assert actual == original_model
@@ -93,7 +93,7 @@ defmodule ControllerTest do
   end
 
   test "Controller.handle_terminus shoud pass model through unmodified if not in terminal model" do
-    model = Model.init({:human_v_human, :X, :player_1})
+    model = Model.init(:human_v_human)
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == model
 
@@ -107,11 +107,11 @@ defmodule ControllerTest do
   end
 
   test "Controller.handle_terminus should handle and return terminal model for human_v_human game" do
-    model = Model.init({:human_v_human, :X, :player_1}) |> TestHelper.sequence([5,1,2,4,8])
+    model = Model.init(:human_v_human) |> TestHelper.sequence([5,1,2,4,8])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :player_1_win
 
-    model = Model.init({:human_v_human, :X, :player_1}) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
+    model = Model.init(:human_v_human) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
     actual = Controller.handle_terminus(model, FakeIO)
     assert actual == :draw
   end

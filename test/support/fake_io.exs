@@ -3,17 +3,21 @@ defmodule FakeIO do
   def puts(message), do: message
 end
 
-defmodule OptionIO do
+defmodule OptionIO1 do
   def puts(message),             do: message
-  def gets("Enter 1, 2 or 3: "), do: "3\n"
-  def gets("Enter X or O: "),    do: "X\n"
-  def gets("Enter Y or N: "),    do: "y\n"
+  def gets("Enter 1, 2 or 3: "), do: "1\n"
 end
 
 defmodule OptionIO2 do
   def puts(message),             do: message
-  def gets("Enter 1, 2 or 3: "), do: "1\n"
-  def gets("Enter X or O: "),    do: "O\n"
+  def gets("Enter 1, 2 or 3: "), do: "2\n"
+end
+
+defmodule OptionIO3 do
+  def puts(message),             do: message
+  def gets("Enter 1, 2 or 3: "), do: "3\n"
+  def gets("Enter X or O: "),    do: "X\n"
+  def gets("Enter Y or N: "),    do: "y\n"
 end
 
 defmodule IOGuess5 do

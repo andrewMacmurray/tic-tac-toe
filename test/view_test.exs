@@ -81,7 +81,7 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1})
+    model = Model.init(:human_v_human)
     assert View.move_summary(3, model) == expected
 
     expected = """
@@ -143,7 +143,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> View.render_init()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -208,7 +208,7 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    prev   = Model.init({:human_v_human, :X, :player_1})
+    prev   = Model.init(:human_v_human)
     curr   = prev |> Model.update(5)
     actual = View.render_change(5, prev, curr) |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -249,7 +249,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> View.render_unrecognized()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -289,7 +289,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> Model.update(5)
       |> View.render_invalid()
       |> ViewTestHelper.strip_ansi()
@@ -330,7 +330,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> ModelTestHelper.sequence([5,2,1,3,9])
       |> View.render_terminus()
       |> ViewTestHelper.strip_ansi()

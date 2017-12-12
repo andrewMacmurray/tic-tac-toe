@@ -4,22 +4,11 @@ defmodule ModelTest do
   alias TicTacToe.Console.Model
   alias BoardTestHelper, as: TestHelper
 
-  test "Model.init should take a tuple of options for human_v_human and return a correct Model struct" do
-    options  = {:human_v_human, :X, :player_1}
-    actual   = Model.init(options)
+  test "Model.init should return correct Model struct for human_v_human game" do
+    actual   = Model.init(:human_v_human)
     expected = %Model{
       game_type:   :human_v_human,
       board:       %Board{},
-      next_player: :player_1,
-      game_status: :non_terminal
-    }
-    assert actual == expected
-
-    options = {:human_v_human, :O, :player_1}
-    actual  = Model.init(options)
-    expected = %Model{
-      game_type:   :human_v_human,
-      board:       %Board{player_1: :O, player_2: :X},
       next_player: :player_1,
       game_status: :non_terminal
     }

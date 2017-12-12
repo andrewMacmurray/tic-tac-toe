@@ -3,7 +3,7 @@ defmodule OptionsTest do
   alias TicTacToe.Console.Options
 
   test "Options.greet should welcome the user" do
-    result = Options.greet(OptionIO)
+    result = Options.greet(OptionIO1)
     greeting_messages = [
       "Welcome to Tic Tac Toe",
       "----------------------"
@@ -14,7 +14,7 @@ defmodule OptionsTest do
   end
 
   test "Options.show_game_options should print the possible game types" do
-    result = Options.show_game_options(OptionIO)
+    result = Options.show_game_options(OptionIO1)
     messages = [
       "Select a game to play:",
       "1. Human vs Human        💁  vs 💁",
@@ -47,7 +47,7 @@ defmodule OptionsTest do
   end
 
   test "Options.get_game_option should prompt user for input and return a parsed response" do
-    result = Options.get_game_option(OptionIO)
+    result = Options.get_game_option(OptionIO3)
     assert result == :human_v_computer
   end
 
@@ -73,7 +73,7 @@ defmodule OptionsTest do
   end
 
   test "Options.get_tile_symbol should prompt user for tile symbol and return a parsed response" do
-    result = Options.get_tile_symbol(OptionIO)
+    result = Options.get_tile_symbol(OptionIO3)
     assert result == :X
   end
 
@@ -102,35 +102,33 @@ defmodule OptionsTest do
   end
 
   test "Options.get_player should prompt user for player choice and return a parsed result" do
-    result = Options.get_player(OptionIO)
+    result = Options.get_player(OptionIO3)
     assert result == :player_1
   end
 
   test "Options.retry_on_error should call the given function if :error is passed to it" do
-    result = Options.retry_on_error(:error, fn _ -> :another_value end, OptionIO)
+    result = Options.retry_on_error(:error, fn _ -> :another_value end, OptionIO3)
     assert result == :another_value
   end
 
   test "Options.retry_on_error should return any non error value" do
-    result = Options.retry_on_error(:player_2, fn _ -> :some_other_value end, OptionIO)
+    result = Options.retry_on_error(:player_2, fn _ -> :some_other_value end, OptionIO3)
     assert result == :player_2
   end
 
   test "Options.human_v_computer should return options for human_v_computer game" do
-    result = Options.human_v_computer(OptionIO)
+    result = Options.human_v_computer(OptionIO3)
     assert result == {:human_v_computer, :X, :player_1}
-  end
-
-  test "Options.human_v_human should return options for human_v_human game" do
-    result = Options.human_v_human(OptionIO)
-    assert result == {:human_v_human, :X, :player_1}
   end
 
   test "Options.get should greet the user and parse all input into correct game options" do
-    result = Options.get(OptionIO)
+    result = Options.get(OptionIO3)
     assert result == {:human_v_computer, :X, :player_1}
 
+    result = Options.get(OptionIO1)
+    assert result == :human_v_human
+
     result = Options.get(OptionIO2)
-    assert result == {:human_v_human, :O, :player_1}
+    assert result == :computer_v_computer
   end
 end
