@@ -34,3 +34,7 @@ defmodule IOGuessUnrecognized do
   def puts(message), do: message
   def gets("> "),    do: "hello?\n"
 end
+
+defmodule FakeProcess do
+  def sleep(_), do: :ok
+end

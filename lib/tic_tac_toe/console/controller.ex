@@ -17,7 +17,7 @@ defmodule TicTacToe.Console.Controller do
   def loop(model, io) do
     case model.game_status do
       :non_terminal -> handle_guess(model, io) |> loop(io)
-      _             -> handle_terminus(model, io)
+      _             -> terminus(model, io)
     end
   end
 
@@ -40,16 +40,9 @@ defmodule TicTacToe.Console.Controller do
   end
 
   @doc """
-  Handles the end of the game
+  Shows final results of the game
   """
-  def handle_terminus(model, io) do
-    case model.game_status do
-      :non_terminal -> model
-      _             -> terminus(model, io)
-    end
-  end
-
-  defp terminus(model, io) do
+  def terminus(model, io) do
     clear_screen(io)
     View.render_terminus(model) |> io.puts()
     model.game_status

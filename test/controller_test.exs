@@ -92,51 +92,38 @@ defmodule ControllerTest do
     assert actual == expected
   end
 
-  test "Controller.handle_terminus shoud pass model through unmodified if not in terminal model" do
-    model = Model.init(:human_v_human)
-    actual = Controller.handle_terminus(model, FakeIO)
-    assert actual == model
 
-    model = Model.init(:computer_v_computer)
-    actual = Controller.handle_terminus(model, FakeIO)
-    assert actual == model
-
-    model = Model.init({:human_v_computer, :O, :player_2})
-    actual = Controller.handle_terminus(model, FakeIO)
-    assert actual == model
-  end
-
-  test "Controller.handle_terminus should handle and return terminal model for human_v_human game" do
+  test "Controller.terminus should print results and return status for human_v_human game" do
     model = Model.init(:human_v_human) |> TestHelper.sequence([5,1,2,4,8])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :player_1_win
 
     model = Model.init(:human_v_human) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :draw
   end
 
-  test "Controller.handle_terminus should handle and return terminal model for computer_v_computer game" do
+  test "Controller.terminus should print results and return status for computer_v_computer game" do
     model = Model.init(:computer_v_computer) |> TestHelper.sequence([5,1,2,4,8])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :player_1_win
 
     model = Model.init(:computer_v_computer) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :draw
   end
 
-  test "Controller.handle_terminus should handle and return terminal model for human_v_computer game" do
+  test "Controller.terminus should print results and return status for human_v_computer game" do
     model = Model.init({:human_v_computer, :X, :player_1}) |> TestHelper.sequence([5,1,2,8,9,3,6,4,7])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :draw
 
     model = Model.init({:human_v_computer, :O, :player_2}) |> TestHelper.sequence([5,1,2,3,8])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :player_1_win
 
     model = Model.init({:human_v_computer, :O, :player_1}) |> TestHelper.sequence([1,5,9,2,3,8])
-    actual = Controller.handle_terminus(model, FakeIO)
+    actual = Controller.terminus(model, FakeIO)
     assert actual == :player_2_win
   end
 
