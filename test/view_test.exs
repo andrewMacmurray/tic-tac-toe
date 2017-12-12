@@ -75,13 +75,24 @@ defmodule ViewTest do
     assert actual == expected
   end
 
+  test "View.render_greeting should render a user greeting" do
+    result = View.render_greeting()
+    greeting_messages = [
+      "Welcome to Tic Tac Toe",
+      "----------------------"
+    ]
+    for message <- greeting_messages do
+      assert result =~ message
+    end
+  end
+
   test "View.move_summary should render human_v_human players correctly" do
     expected = """
     Player 1 took tile 3
     Your turn Player 2
     """
     |> String.trim()
-    model = Model.init({:human_v_human, :X, :player_1})
+    model = Model.init(:human_v_human)
     assert View.move_summary(3, model) == expected
 
     expected = """
@@ -143,7 +154,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> View.render_init()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -189,11 +200,21 @@ defmodule ViewTest do
     assert actual == expected
   end
 
-  test "View.render_init should show nothing if computer goes first" do
+  test "View.render_init should render board and message if computer goes first" do
+    expected = """
+    ---------------
+       1   2   3
+    ---+---+---+---
+       4   5   6
+    ---+---+---+---
+       7   8   9
+    ---------------
+    I'll go first, let me think...
+    """
+    |> String.trim()
     model  = Model.init({:human_v_computer, :X, :player_2})
-    assert View.render_init(model) == ""
+    assert View.render_init(model) == expected
   end
-
 
   test "View.render_change should render the board and a summary of the move made" do
     expected = """
@@ -208,7 +229,7 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    prev   = Model.init({:human_v_human, :X, :player_1})
+    prev   = Model.init(:human_v_human)
     curr   = prev |> Model.update(5)
     actual = View.render_change(5, prev, curr) |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -249,7 +270,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> View.render_unrecognized()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -289,7 +310,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> Model.update(5)
       |> View.render_invalid()
       |> ViewTestHelper.strip_ansi()
@@ -330,7 +351,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_human, :X, :player_1})
+      Model.init(:human_v_human)
       |> ModelTestHelper.sequence([5,2,1,3,9])
       |> View.render_terminus()
       |> ViewTestHelper.strip_ansi()

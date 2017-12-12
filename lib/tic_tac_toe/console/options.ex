@@ -3,31 +3,13 @@ defmodule TicTacToe.Console.Options do
   alias TicTacToe.Util.Message
 
   @doc """
-  greets the user and collects options for the game
+  Prompts user for game options
   """
   def get(io \\ IO) do
-    greet(io)
-    opt = get_game_option(io)
-    case opt do
-      :human_v_human       -> human_v_human(io)
-      :human_v_computer    -> human_v_computer(io)
-      :computer_v_computer -> :computer_v_computer
+    case get_game_option(io) do
+      :human_v_computer -> human_v_computer(io)
+      opt               -> opt
     end
-  end
-
-  def greet(io \\ IO) do
-    [
-      Message.welcome(),
-      Message.divider()
-    ]
-    |> Message.join_lines()
-    |> io.puts()
-  end
-
-  def human_v_human(io \\ IO) do
-    tile_message_human(io)
-    tile_symbol = get_tile_symbol(io)
-    {:human_v_human, tile_symbol, :player_1}
   end
 
   def human_v_computer(io \\ IO) do
@@ -35,12 +17,6 @@ defmodule TicTacToe.Console.Options do
     tile_symbol = get_tile_symbol(io)
     player      = get_player(io)
     {:human_v_computer, tile_symbol, player}
-  end
-
-  defp tile_message_human(io) do
-    :human_v_human
-    |> Message.tile_symbol()
-    |> io.puts()
   end
 
   defp tile_message_computer(io) do
@@ -58,7 +34,7 @@ defmodule TicTacToe.Console.Options do
     show_game_options(io)
     Message.enter_game_option()
     |> io.gets()
-    |> parse_game_option()
+    |> parse_game_option!()
   end
 
   def show_game_options(io \\ IO) do
@@ -78,7 +54,7 @@ defmodule TicTacToe.Console.Options do
   defp get_tile_symbol_(io) do
     Message.enter_tile_symbol()
     |> io.gets()
-    |> parse_tile_symbol()
+    |> parse_tile_symbol!()
   end
 
   def get_player(io \\ IO) do
@@ -90,7 +66,7 @@ defmodule TicTacToe.Console.Options do
     Message.player() |> io.puts()
     Message.yes_no()
     |> io.gets()
-    |> parse_player()
+    |> parse_player!()
   end
 
   def retry_on_error(result, func, io \\ IO) do
@@ -103,7 +79,7 @@ defmodule TicTacToe.Console.Options do
     end
   end
 
-  def parse_game_option(input) do
+  def parse_game_option!(input) do
     case String.trim(input) do
       "1" -> :human_v_human
       "2" -> :computer_v_computer
@@ -112,7 +88,7 @@ defmodule TicTacToe.Console.Options do
     end
   end
 
-  def parse_tile_symbol(input) do
+  def parse_tile_symbol!(input) do
     case format_input(input) do
       "X" -> :X
       "O" -> :O
@@ -121,12 +97,20 @@ defmodule TicTacToe.Console.Options do
     end
   end
 
-  def parse_player(input) do
+  def parse_player!(input) do
+    case parse_yes_no!(input) do
+      :yes -> :player_1
+      :no  -> :player_2
+      _    -> :error
+    end
+  end
+
+  def parse_yes_no!(input) do
     case format_input(input) do
-      "Y"   -> :player_1
-      "YES" -> :player_1
-      "N"   -> :player_2
-      "NO"  -> :player_2
+      "Y"   -> :yes
+      "YES" -> :yes
+      "N"   -> :no
+      "NO"  -> :no
       _     -> :error
     end
   end

@@ -14,10 +14,10 @@ defmodule TicTacToe.Console.Model do
   @doc """
   Initialises a game for a given config
   """
-  def init({:human_v_human, symbol, player}) do
+  def init(:human_v_human) do
     %Model{
       game_type: :human_v_human,
-      board:     init_board(symbol, player)
+      board:     %Board{}
     }
   end
 

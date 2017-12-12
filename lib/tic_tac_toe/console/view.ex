@@ -117,8 +117,13 @@ defmodule TicTacToe.Console.View do
   end
 
   defp human_computer_init(model) do
-    if   model.next_player == model.ai_player do ""
-    else standard_init(model)
+    if model.next_player == model.ai_player do
+      [ render_board(model.board),
+        Message.first_move_computer()
+      ]
+      |> Message.join_lines()
+    else
+      standard_init(model)
     end
   end
 
@@ -134,6 +139,17 @@ defmodule TicTacToe.Console.View do
       :human_v_computer -> Message.next_move_human()
       _                 -> Message.next_move(player)
     end
+  end
+
+  @doc """
+  Renders initial greeting for user
+  """
+  def render_greeting do
+    [
+      Message.welcome(),
+      Message.divider()
+    ]
+    |> Message.join_lines()
   end
 
   def render_board(%Board{tiles: tiles}) do

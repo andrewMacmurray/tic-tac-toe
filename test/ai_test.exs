@@ -24,23 +24,18 @@ defmodule AiTest do
 
   test "AI.run should block an oponent about to win" do
     board = %Board{player_1: :X, player_2: :O}
-    result =
-      [5, 1, 3]
-      |> TestHelper.run_alternating_players(:player_1, board)
-      |> AI.run(:player_2)
-    assert result == 7
-
-    result =
-      [5, 1, 2]
-      |> TestHelper.run_alternating_players(:player_1, board)
-      |> AI.run(:player_2)
-    assert result == 8
-
-    result =
-      [5, 9, 3, 7]
-      |> TestHelper.run_alternating_players(:player_2, board)
-      |> AI.run(:player_2)
-    assert result == 8
+    states = [
+      {[5, 1, 3],    7},
+      {[5, 1, 2],    8},
+      {[5, 9, 3, 7], 8}
+    ]
+    for {sequence, expected_guess} <- states do
+      result =
+        sequence
+        |> TestHelper.run_alternating_players(:player_1, board)
+        |> AI.run(:player_2)
+      assert result == expected_guess
+    end
   end
 
   test "brute force random play, player_1 should never win" do

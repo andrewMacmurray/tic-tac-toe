@@ -43,6 +43,7 @@ defmodule TicTacToe.Util.Message do
   def invalid_guess(:human_v_computer, _),      do: "That tile has already been taken"
   def guess_instructions,       do: "Please enter a valid guess"
 
+  def first_move_computer,  do: "I'll go first, let me think..."
   def next_move(:player_1), do: "Your turn Player 1"
   def next_move(:player_2), do: "Your turn Player 2"
   def next_move_human,      do: "Your turn"
@@ -53,6 +54,9 @@ defmodule TicTacToe.Util.Message do
   def draw,         do: "It's a draw!"
   def user_win,     do: "You won! 🎉"
   def computer_win, do: "You lost! 😢"
+
+  def play_again, do: "Do you want to play another game?"
+  def goodbye,    do: "Ok bye! 👋"
 
   @doc """
   Joins a list of strings together with a new line

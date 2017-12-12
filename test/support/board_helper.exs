@@ -41,9 +41,9 @@ defmodule BoardTestHelper do
   end
 
   def terminal?(board) do
-    p1_win = Board.winner?(board, :player_1)
-    p2_win = Board.winner?(board, :player_2)
-    full   = Board.full?(board)
-    p1_win || p2_win || full
+    case Board.status(board) do
+      :non_terminal -> false
+      _             -> true
+    end
   end
 end
