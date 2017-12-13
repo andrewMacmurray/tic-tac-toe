@@ -4,11 +4,11 @@ defmodule AiTest do
   alias BoardTestHelper, as: TestHelper
 
   test "AI.run should take the center if not already taken" do
-    result = %Board{} |> AI.run(:player_2)
+    result = Board.init(3) |> AI.run(:player_2)
     assert result == 5
 
     result =
-      %Board{}
+      Board.init(3)
       |> Board.update(1, :player_1)
       |> AI.run(:player_2)
     assert result == 5
@@ -16,14 +16,14 @@ defmodule AiTest do
 
   test "AI.run should take the corner if the center is already taken" do
     result =
-      %Board{}
+      Board.init(3)
       |> Board.update(5, :player_1)
       |> AI.run(:player_2)
     assert result == 1
   end
 
   test "AI.run should block an oponent about to win" do
-    board = %Board{player_1: :X, player_2: :O}
+    board = Board.init(3)
     states = [
       {[5, 1, 3],    7},
       {[5, 1, 2],    8},

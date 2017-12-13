@@ -35,7 +35,7 @@ defmodule ViewTest do
     ---------------
     """
     |> String.trim()
-    assert View.render_board(%Board{}) == expected
+    assert View.render_board(Board.init(3)) == expected
 
     expected = """
     ---------------
@@ -49,7 +49,7 @@ defmodule ViewTest do
     |> String.trim()
     actual =
       [1, 5, 2]
-      |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
+      |> BoardTestHelper.run_alternating_players(:player_1, Board.init(3))
       |> View.render_board()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -70,7 +70,7 @@ defmodule ViewTest do
     |> String.trim()
     actual =
       [1,2]
-      |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
+      |> BoardTestHelper.run_alternating_players(:player_1, Board.init(3))
       |> View.render_board()
     assert actual == expected
   end

@@ -17,30 +17,30 @@ defmodule TicTacToe.Console.Model do
   def init(:human_v_human) do
     %Model{
       game_type: :human_v_human,
-      board:     %Board{}
+      board:      Board.init(3)
     }
   end
 
   def init({:human_v_computer, symbol, player}) do
     %Model{
       game_type: :human_v_computer,
-      board:     init_board(symbol, player),
-      ai_player: Board.swap_player(player)
+      board:      assign_players(symbol, player),
+      ai_player:  Board.swap_player(player)
     }
   end
 
   def init(:computer_v_computer) do
     %Model{
       game_type: :computer_v_computer,
-      board:     %Board{}
+      board:      Board.init(3)
     }
   end
 
-  defp init_board(symbol, player) do
+  defp assign_players(symbol, player) do
     alternate = Board.swap_symbol(symbol)
     case player do
-      :player_1 -> %Board{player_1: symbol, player_2: alternate}
-      :player_2 -> %Board{player_2: symbol, player_1: alternate}
+      :player_1 -> Board.init(3, symbol, alternate)
+      :player_2 -> Board.init(3, alternate, symbol)
     end
   end
 
