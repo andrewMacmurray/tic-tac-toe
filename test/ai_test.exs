@@ -39,7 +39,7 @@ defmodule AiTest do
   end
 
   test "brute force random play, player_1 should never win" do
-    board     = %Board{player_1: :X, player_2: :O} |> Board.update(5, :player_2)
+    board     = Board.init(3) |> Board.update(5, :player_2)
     ai_player = :player_2
     for _ <- 1..20 do
       # plays random moves against the AI until a terminal state has been reached
