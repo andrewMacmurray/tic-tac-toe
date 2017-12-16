@@ -6,12 +6,14 @@ end
 defmodule OptionIO1 do
   def puts(message),             do: message
   def gets("Enter 1, 2 or 3: "), do: "1\n"
+  def gets("Enter 3 or 4: "),    do: "3\n"
 end
 
 defmodule OptionIO2 do
   def puts(message),             do: message
   def gets("Enter 1, 2 or 3: "), do: "2\n"
   def gets("Enter Y or N: "),    do: "n\n"
+  def gets("Enter 3 or 4: "),    do: "3\n"
 end
 
 defmodule OptionIO3 do
@@ -19,6 +21,7 @@ defmodule OptionIO3 do
   def gets("Enter 1, 2 or 3: "), do: "3\n"
   def gets("Enter X or O: "),    do: "X\n"
   def gets("Enter Y or N: "),    do: "y\n"
+  def gets("Enter 3 or 4: "),    do: "3\n"
 end
 
 defmodule OptionIOYes do

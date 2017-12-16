@@ -40,6 +40,28 @@ defmodule OptionsTest do
     assert result == :human_v_computer
   end
 
+  test "Option.parse_board_scale! should parse the scale of the board" do
+    inputs = [
+      {"3\n", 3},
+      {"4\n", 4}
+    ]
+    for {input, expected} <- inputs do
+      assert Options.parse_board_scale!(input) == expected
+    end
+  end
+
+  test "Option.parse_board_scale! should reject any input not 3 or 4" do
+    inputs = [
+      "1\n",
+      "hello\n",
+      "5\n",
+      "2\n"
+    ]
+    for input <- inputs do
+      assert Options.parse_board_scale!(input) == :error
+    end
+  end
+
   test "Options.parse_tile_symbol! should parse user input into a tile type" do
     inputs = [
       {"X\n",      :X},
@@ -64,6 +86,11 @@ defmodule OptionsTest do
   test "Options.get_tile_symbol should prompt user for tile symbol and return a parsed response" do
     result = Options.get_tile_symbol(OptionIO3)
     assert result == :X
+  end
+
+  test "Options.get_board_scale should prompt the user for a board scale and return parsed scale" do
+    result = Options.get_board_scale(OptionIO3)
+    assert result == 3
   end
 
   test "Options.parse_player! should parse user input into player_1 or player_2" do
@@ -107,14 +134,14 @@ defmodule OptionsTest do
 
   test "Options.human_v_computer should return options for human_v_computer game" do
     result = Options.human_v_computer(OptionIO3)
-    assert result == {:human_v_computer, :X, :player_1}
+    assert result == {:human_v_computer, :X, :player_1, 3}
   end
 
   test "Options.get should greet the user and parse all input into correct game options" do
     states = [
-      {OptionIO3, {:human_v_computer, :X, :player_1}},
-      {OptionIO1, :human_v_human},
-      {OptionIO2, :computer_v_computer}
+      {OptionIO3, {:human_v_computer, :X, :player_1, 3}},
+      {OptionIO1, {:human_v_human, 3}},
+      {OptionIO2, {:computer_v_computer, 3}}
     ]
     for {effect_module, expected} <- states do
       result = Options.get(effect_module)

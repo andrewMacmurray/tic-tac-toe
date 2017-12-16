@@ -16,6 +16,9 @@ defmodule TicTacToe.Util.Message do
 
   def enter_game_option, do: "Enter 1, 2 or 3: "
 
+  def board_scale, do: "What size of board would you like to play on?"
+  def three_or_four, do: "Enter 3 or 4: "
+
   def tile_symbol(:human_v_computer), do: "Ok, which tile Symbol would you like?"
   def tile_symbol(:human_v_human),    do: "Ok Player 1, which tile Symbol would you like?"
 
