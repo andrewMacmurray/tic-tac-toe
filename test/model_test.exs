@@ -5,7 +5,7 @@ defmodule ModelTest do
   alias BoardTestHelper, as: TestHelper
 
   test "Model.init should return correct Model struct for human_v_human game" do
-    actual   = Model.init(:human_v_human)
+    actual   = Model.init({:human_v_human, 3})
     expected = %Model{
       game_type:   :human_v_human,
       board:       Board.init(3)
@@ -14,7 +14,7 @@ defmodule ModelTest do
   end
 
   test "Model.init should take a :computer_v_computer message and return a correct Model struct" do
-    actual   = Model.init(:computer_v_computer)
+    actual   = Model.init({:computer_v_computer, 3})
     expected = %Model{
       game_type:   :computer_v_computer,
       board:       Board.init(3)
@@ -23,7 +23,7 @@ defmodule ModelTest do
   end
 
   test "Model.init should take a tuple of options for human_v_computer and return a correct Model struct" do
-    options  = {:human_v_computer, :X, :player_1}
+    options  = {:human_v_computer, :X, :player_1, 3}
     actual   = Model.init(options)
     expected = %Model{
       game_type:   :human_v_computer,
@@ -32,7 +32,7 @@ defmodule ModelTest do
     }
     assert actual == expected
 
-    options = {:human_v_computer, :X, :player_2}
+    options = {:human_v_computer, :X, :player_2, 3}
     actual  = Model.init(options)
     expected = %Model{
       game_type:   :human_v_computer,

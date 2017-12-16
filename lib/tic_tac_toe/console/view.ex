@@ -152,42 +152,74 @@ defmodule TicTacToe.Console.View do
     |> Message.join_lines()
   end
 
-  def render_board(%Board{tiles: tiles}) do
-    tiles
+  def render_board(board) do
+    board.tiles
     |> Enum.to_list()
-    |> Enum.chunk(3)
+    |> Enum.chunk(board.scale)
     |> Enum.map(&render_row/1)
-    |> Enum.intersperse(board_inner_divider())
+    |> Enum.intersperse(board_inner_divider(board.scale))
     |> Message.join_lines()
-    |> pad_board()
+    |> pad_board(board.scale)
   end
 
-  defp pad_board(board) do
+  defp pad_board(board_string, scale) do
     [
-      board_outer_divider(),
-      board,
-      board_outer_divider()
+      board_outer_divider(scale),
+      board_string,
+      board_outer_divider(scale)
     ]
     |> Message.join_lines()
   end
 
-  defp board_outer_divider, do: "---------------"
-  defp board_inner_divider, do: "---+---+---+---"
+  defp board_outer_divider(scale) do
+       String.duplicate("---", scale + 1)
+    <> String.duplicate("-", scale)
+  end
 
-  def render_row([a, b, c]) do
-    [a, b, c]
+  defp board_inner_divider(scale) do
+    1..(scale + 1)
+    |> Enum.map(fn _ -> "---" end)
+    |> Enum.intersperse("+")
+    |> Enum.join("")
+  end
+
+  def render_row(row) do
+    row
     |> Enum.map(&render_tile/1)
-    |> Enum.intersperse("   ")
+    |> Enum.flat_map(fn x -> [x, tile_spacing(x)] end)
+    |> drop_last()
+    |> Enum.map(&color_tile/1)
     |> Enum.join("")
     |> pad_row()
   end
 
+  def drop_last(xs) do
+    {_, xs} = xs |> List.pop_at(-1)
+    xs
+  end
+
   defp pad_row(row), do: "   " <> row
+
+  def tile_spacing(tile_string) do
+    case String.length(tile_string) do
+      1 -> "   "
+      2 -> "  "
+      _ -> " "
+    end
+  end
+
+  def color_tile(tile_string) do
+    case tile_string do
+      "X" -> bright_green("X")
+      "O" -> bright_blue("O")
+      t   -> t
+    end
+  end
 
   def render_tile(tile) do
     case tile do
-      {_, :X}     -> bright_green("X")
-      {_, :O}     -> bright_blue("O")
+      {_, :X}     -> "X"
+      {_, :O}     -> "O"
       {n, :empty} -> "#{n}"
     end
   end
