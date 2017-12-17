@@ -40,10 +40,24 @@ defmodule BoardTestHelper do
     end
   end
 
+  # checks if board is in terminal state
   def terminal?(board) do
     case Board.status(board) do
       :non_terminal -> false
       _             -> true
     end
+  end
+
+  # adds all moves to a board for one player
+  def run_moves(board, moves, player) do
+    moves
+    |> List.foldl(board, fn(mv, b) -> Board.update(b, mv, player) end)
+  end
+
+  # adds two move sets to a board
+  def run_move_sets(board, player_1_moves, player_2_moves) do
+    board
+    |> run_moves(player_1_moves, :player_1)
+    |> run_moves(player_2_moves, :player_2)
   end
 end

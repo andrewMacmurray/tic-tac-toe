@@ -14,7 +14,10 @@ defmodule AiFourByFourTest do
       {11, 6}
     ]
     for {p1_move, ai_move} <- player_moves do
-      result = Board.init(4) |> Board.update(p1_move, :player_1) |> AI.take_center_four()
+      result =
+        Board.init(4)
+        |> Board.update(p1_move, :player_1)
+        |> AI.take_center_four()
       assert result == ai_move
     end
   end
@@ -29,8 +32,8 @@ defmodule AiFourByFourTest do
     ]
     for {seq, expected} <- sequences do
       result =
-        seq
-        |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
+        Board.init(4)
+        |> TestHelper.run_moves(seq, :player_1)
         |> AI.find_promising_oponent_move(:player_2)
       assert result == expected
     end
@@ -47,9 +50,10 @@ defmodule AiFourByFourTest do
       {[1, 5, 3, 7],  [9],    %{win_state: [1,2,3,4], move: [1,3]}},
     ]
     for {oponent_seq, ai_seq, expected} <- sequences do
-      b1 = oponent_seq |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
-      b2 = ai_seq |> List.foldl(b1, fn(mv, b) -> Board.update(b, mv, :player_2) end)
-      result = AI.find_promising_oponent_move(b2, :player_2)
+      result =
+        Board.init(4)
+        |> TestHelper.run_move_sets(oponent_seq, ai_seq)
+        |> AI.find_promising_oponent_move(:player_2)
       assert result == expected
     end
   end
@@ -64,9 +68,10 @@ defmodule AiFourByFourTest do
       {[1,2,10],      [3],  6}
     ]
     for {oponent_seq, ai_seq, expected} <- sequences do
-      b1 = oponent_seq |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
-      b2 = ai_seq |> List.foldl(b1, fn(mv, b) -> Board.update(b, mv, :player_2) end)
-      result = AI.block_promising_move(b2, :player_2)
+      result =
+        Board.init(4)
+        |> TestHelper.run_move_sets(oponent_seq, ai_seq)
+        |> AI.block_promising_move(:player_2)
       assert result == expected
     end
   end
@@ -78,8 +83,8 @@ defmodule AiFourByFourTest do
     ]
     for {seq, expected} <- sequences do
       result =
-        seq
-        |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
+        Board.init(4)
+        |> TestHelper.run_moves(seq, :player_1)
         |> AI.find_dangerous_oponent_move(:player_2)
       assert result == expected
     end
@@ -93,9 +98,10 @@ defmodule AiFourByFourTest do
       {[1,2,3,5,9], [4],  %{win_state: [1,5,9,13], move: [1,5,9]}}
     ]
     for {oponent_seq, ai_seq, expected} <- sequences do
-      b1 = oponent_seq |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
-      b2 = ai_seq |> List.foldl(b1, fn(mv, b) -> Board.update(b, mv, :player_2) end)
-      result = AI.find_dangerous_oponent_move(b2, :player_2)
+      result =
+        Board.init(4)
+        |> TestHelper.run_move_sets(oponent_seq, ai_seq)
+        |> AI.find_dangerous_oponent_move(:player_2)
       assert result == expected
     end
   end
@@ -107,9 +113,10 @@ defmodule AiFourByFourTest do
       {[2,6,10],    [14], :no_move}
     ]
     for {oponent_seq, ai_seq, expected} <- sequences do
-      b1 = oponent_seq |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
-      b2 = ai_seq |> List.foldl(b1, fn(mv, b) -> Board.update(b, mv, :player_2) end)
-      result = AI.block_dangerous_move(b2, :player_2)
+      result =
+        Board.init(4)
+        |> TestHelper.run_move_sets(oponent_seq, ai_seq)
+        |> AI.block_dangerous_move(:player_2)
       assert result == expected
     end
   end
@@ -123,8 +130,8 @@ defmodule AiFourByFourTest do
     ]
     for {ai_seq, expected} <- sequences do
       result =
-        ai_seq
-        |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_2) end)
+        Board.init(4)
+        |> TestHelper.run_moves(ai_seq, :player_2)
         |> AI.add_to_existing_move(:player_2)
       assert result == expected
     end
@@ -138,9 +145,10 @@ defmodule AiFourByFourTest do
       {[11],     [2,3,4,14], 1}
     ]
     for {oponent_seq, ai_seq, expected} <- sequences do
-      b1 = oponent_seq |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
-      b2 = ai_seq |> List.foldl(b1, fn(mv, b) -> Board.update(b, mv, :player_2) end)
-      result = AI.add_to_existing_move(b2, :player_2)
+      result =
+        Board.init(4)
+        |> TestHelper.run_move_sets(oponent_seq, ai_seq)
+        |> AI.add_to_existing_move(:player_2)
       assert result == expected
     end
   end
@@ -152,9 +160,10 @@ defmodule AiFourByFourTest do
       {[1,2],   [3], 7}
     ]
     for {oponent_seq, ai_seq, expected} <- sequences do
-      b1 = oponent_seq |> List.foldl(Board.init(4), fn(mv, b) -> Board.update(b, mv, :player_1) end)
-      b2 = ai_seq |> List.foldl(b1, fn(mv, b) -> Board.update(b, mv, :player_2) end)
-      result = AI.aggressively_block(b2, :player_2)
+      result =
+        Board.init(4)
+        |> TestHelper.run_move_sets(oponent_seq, ai_seq)
+        |> AI.aggressively_block(:player_2)
       assert result == expected
     end
   end
