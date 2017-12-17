@@ -75,7 +75,7 @@ defmodule TicTacToe.Board do
     |> Enum.any?(fn xs -> length(xs) == board.scale end)
   end
 
-  defp match_winning_moves(win_state, moves) do
+  def match_winning_moves(win_state, moves) do
     moves |> Enum.filter(fn x -> Enum.member?(win_state, x) end)
   end
 
