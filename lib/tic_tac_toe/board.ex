@@ -100,6 +100,16 @@ defmodule TicTacToe.Board do
   end
 
   @doc """
+  Gets tile symbol for given player
+  """
+  def tile_symbol(board, player) do
+    case player do
+      :player_1 -> board.player_1
+      :player_2 -> board.player_2
+    end
+  end
+
+  @doc """
   Swaps player for alternate one
   """
   def swap_player(:player_1), do: :player_2

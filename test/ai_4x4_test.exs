@@ -1,10 +1,11 @@
 defmodule AiFourByFourTest do
   use ExUnit.Case
   alias TicTacToe.{AI, Board}
+  alias TicTacToe.Strategy.FourByFour
   alias BoardTestHelper, as: TestHelper
 
-  test "AI.take_center_four should take a center piece if not already taken" do
-    result = Board.init(4) |> AI.run(:player_2)
+  test "FourByFour.take_center should take a center piece if not already taken" do
+    result = Board.init(4) |> FourByFour.take_center()
     assert result == 6
 
     player_moves = [
@@ -17,12 +18,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> Board.update(p1_move, :player_1)
-        |> AI.take_center_four()
+        |> FourByFour.take_center()
       assert result == ai_move
     end
   end
 
-  test "AI.find_promising_oponent_move should look for an oponent move at least 2 tiles long" do
+  test "FourByFour.find_promising_oponent_move should look for an oponent move at least 2 tiles long" do
     sequences = [
       {[5],           :no_move},
       {[1, 2],        %{win_state: [1,2,3,4], move: [1,2]}},
@@ -34,12 +35,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_moves(seq, :player_1)
-        |> AI.find_promising_oponent_move(:player_2)
+        |> FourByFour.find_promising_oponent_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.find_promising_oponent_move should return the move if the remaining tiles aren't already taken by the ai" do
+  test "FourByFour.find_promising_oponent_move should return the move if the remaining tiles aren't already taken by the ai" do
     sequences = [
       {[1, 2],        [],     %{win_state: [1,2,3,4], move: [1,2]}},
       {[1, 2],        [3],    :no_move},
@@ -53,12 +54,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_move_sets(oponent_seq, ai_seq)
-        |> AI.find_promising_oponent_move(:player_2)
+        |> FourByFour.find_promising_oponent_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.block_promising_move should return a blocking move to an oponents promising move" do
+  test "FourByFour.block_promising_move should return a blocking move to an oponents promising move" do
     sequences = [
       {[1, 2],        [],   3},
       {[1, 5],        [],   9},
@@ -71,12 +72,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_move_sets(oponent_seq, ai_seq)
-        |> AI.block_promising_move(:player_2)
+        |> FourByFour.block_promising_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.find_dangerous_oponent_move should find a move where the oponent has 3 tiles lined up" do
+  test "FourByFour.find_dangerous_oponent_move should find a move where the oponent has 3 tiles lined up" do
     sequences = [
       {[1,3,4,7,13],  %{win_state: [1,2,3,4], move: [1,3,4]}},
       {[3,4,7,13],    %{win_state: [4,7,10,13], move: [4,7,13]}}
@@ -85,12 +86,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_moves(seq, :player_1)
-        |> AI.find_dangerous_oponent_move(:player_2)
+        |> FourByFour.find_dangerous_oponent_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.find_dangerous_oponent_move should only return the move if the ai hasn't taken the final piece" do
+  test "FourByFour.find_dangerous_oponent_move should only return the move if the ai hasn't taken the final piece" do
     sequences = [
       {[1,3,4,7],   [],   %{win_state: [1,2,3,4], move: [1,3,4]}},
       {[2,6,10],    [14], :no_move},
@@ -101,12 +102,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_move_sets(oponent_seq, ai_seq)
-        |> AI.find_dangerous_oponent_move(:player_2)
+        |> FourByFour.find_dangerous_oponent_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.block_dangerous_move should return a blocking move to an oponent's dangerous move" do
+  test "FourByFour.block_dangerous_move should return a blocking move to an oponent's dangerous move" do
     sequences = [
       {[1,3,4,7],   [],   2},
       {[1,2,3,5,9], [4],  13},
@@ -116,12 +117,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_move_sets(oponent_seq, ai_seq)
-        |> AI.block_dangerous_move(:player_2)
+        |> FourByFour.block_dangerous_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.add_to_existing_move should return a move to add to an existing move" do
+  test "FourByFour.extend_existing_move should return a move to add to the most promising existing move" do
     sequences = [
       {[1],     2},
       {[1,2],   3},
@@ -132,12 +133,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_moves(ai_seq, :player_2)
-        |> AI.add_to_existing_move(:player_2)
+        |> FourByFour.extend_existing_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.add_to_existing_move should only return moves where spaces still exist" do
+  test "FourByFour.extend_existing_move should only return moves where spaces still exist" do
     sequences = [
       {[1],      [2],        6},
       {[2],      [4],        8},
@@ -148,12 +149,12 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_move_sets(oponent_seq, ai_seq)
-        |> AI.add_to_existing_move(:player_2)
+        |> FourByFour.extend_existing_move(:player_2)
       assert result == expected
     end
   end
 
-  test "AI.aggressively_block combines three strategies in order of importance" do
+  test "FourByFour.aggressively_block combines three strategies in order of importance" do
     sequences = [
       {[1,2,3], [],  4},
       {[5,6],   [],  7},
@@ -163,7 +164,7 @@ defmodule AiFourByFourTest do
       result =
         Board.init(4)
         |> TestHelper.run_move_sets(oponent_seq, ai_seq)
-        |> AI.aggressively_block(:player_2)
+        |> FourByFour.aggressively_block(:player_2)
       assert result == expected
     end
   end

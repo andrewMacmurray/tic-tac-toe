@@ -1,4 +1,4 @@
-defmodule TicTacToe.Minimax do
+defmodule TicTacToe.Strategy.Minimax do
   @moduledoc false
   alias TicTacToe.Board
 
