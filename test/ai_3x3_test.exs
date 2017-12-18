@@ -48,4 +48,17 @@ defmodule AiThreeByThreeTest do
       refute p1_win
     end
   end
+
+  test "AI vs AI should always result in a draw" do
+    board = Board.init(3)
+    xs    = Enum.to_list(1..9)
+    res = List.foldl(xs, board, fn(i, b) ->
+      cond do
+        TestHelper.terminal?(b) -> b
+        rem(i, 2) == 0          -> Board.update(b, AI.run(b, :player_2), :player_2)
+        true                    -> Board.update(b, AI.run(b, :player_1), :player_1)
+      end
+    end)
+    assert Board.status(res) == :draw
+  end
 end
