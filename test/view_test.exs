@@ -35,7 +35,7 @@ defmodule ViewTest do
     ---------------
     """
     |> String.trim()
-    assert View.render_board(%Board{}) == expected
+    assert View.render_board(Board.init(3)) == expected
 
     expected = """
     ---------------
@@ -49,10 +49,26 @@ defmodule ViewTest do
     |> String.trim()
     actual =
       [1, 5, 2]
-      |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
+      |> BoardTestHelper.run_alternating_players(:player_1, Board.init(3))
       |> View.render_board()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
+  end
+
+  test "View.render_board renders tiles correctly at a 4x4 scale" do
+    expected = """
+    -------------------
+       1   2   3   4
+    ---+---+---+---+---
+       5   6   7   8
+    ---+---+---+---+---
+       9   10  11  12
+    ---+---+---+---+---
+       13  14  15  16
+    -------------------
+    """
+    |> String.trim()
+    assert View.render_board(Board.init(4)) == expected
   end
 
   test "View.render_board renders tiles with correct colours" do
@@ -70,7 +86,7 @@ defmodule ViewTest do
     |> String.trim()
     actual =
       [1,2]
-      |> BoardTestHelper.run_alternating_players(:player_1, %Board{})
+      |> BoardTestHelper.run_alternating_players(:player_1, Board.init(3))
       |> View.render_board()
     assert actual == expected
   end
@@ -92,7 +108,7 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    model = Model.init(:human_v_human)
+    model = Model.init({:human_v_human, 3})
     assert View.move_summary(3, model) == expected
 
     expected = """
@@ -110,7 +126,7 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    model = Model.init(:computer_v_computer)
+    model = Model.init({:computer_v_computer, 3})
     assert View.move_summary(5, model) == expected
 
     expected = """
@@ -128,7 +144,7 @@ defmodule ViewTest do
     Your turn
     """
     |> String.trim()
-    model = Model.init({:human_v_computer, :X, :player_2})
+    model = Model.init({:human_v_computer, :X, :player_2, 3})
     assert View.move_summary(1, model) == expected
 
     expected = """
@@ -154,7 +170,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init(:human_v_human)
+      Model.init({:human_v_human, 3})
       |> View.render_init()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -174,7 +190,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init(:computer_v_computer)
+      Model.init({:computer_v_computer, 3})
       |> View.render_init()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -194,7 +210,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_computer, :X, :player_1})
+      Model.init({:human_v_computer, :X, :player_1, 3})
       |> View.render_init()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -212,7 +228,7 @@ defmodule ViewTest do
     I'll go first, let me think...
     """
     |> String.trim()
-    model  = Model.init({:human_v_computer, :X, :player_2})
+    model  = Model.init({:human_v_computer, :X, :player_2, 3})
     assert View.render_init(model) == expected
   end
 
@@ -229,7 +245,7 @@ defmodule ViewTest do
     Your turn Player 2
     """
     |> String.trim()
-    prev   = Model.init(:human_v_human)
+    prev   = Model.init({:human_v_human, 3})
     curr   = prev |> Model.update(5)
     actual = View.render_change(5, prev, curr) |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -249,7 +265,7 @@ defmodule ViewTest do
     Ok, I'll go next
     """
     |> String.trim()
-    prev = Model.init({:human_v_computer, :X, :player_1})
+    prev = Model.init({:human_v_computer, :X, :player_1, 3})
     curr = prev |> Model.update(5)
     actual = View.render_change(5, prev, curr) |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -270,7 +286,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init(:human_v_human)
+      Model.init({:human_v_human, 3})
       |> View.render_unrecognized()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -290,7 +306,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_computer, :X, :player_1})
+      Model.init({:human_v_computer, :X, :player_1, 3})
       |> View.render_unrecognized()
       |> ViewTestHelper.strip_ansi()
     assert actual == expected
@@ -310,7 +326,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init(:human_v_human)
+      Model.init({:human_v_human, 3})
       |> Model.update(5)
       |> View.render_invalid()
       |> ViewTestHelper.strip_ansi()
@@ -331,7 +347,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_computer, :O, :player_2})
+      Model.init({:human_v_computer, :O, :player_2, 3})
       |> Model.update(5)
       |> View.render_invalid()
       |> ViewTestHelper.strip_ansi()
@@ -351,7 +367,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init(:human_v_human)
+      Model.init({:human_v_human, 3})
       |> ModelTestHelper.sequence([5,2,1,3,9])
       |> View.render_terminus()
       |> ViewTestHelper.strip_ansi()
@@ -371,7 +387,7 @@ defmodule ViewTest do
     """
     |> String.trim()
     actual =
-      Model.init({:human_v_computer, :O, :player_2})
+      Model.init({:human_v_computer, :O, :player_2, 3})
       |> ModelTestHelper.sequence([5,2,1,3,9])
       |> View.render_terminus()
       |> ViewTestHelper.strip_ansi()

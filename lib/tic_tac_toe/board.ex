@@ -1,12 +1,29 @@
 defmodule TicTacToe.Board do
   @moduledoc false
-  @empty_board 1..9 |> Map.new(fn move -> {move, :empty} end)
+  alias TicTacToe.Board
 
   defstruct [
-    player_1: :X,
-    player_2: :O,
-    tiles: @empty_board
+    :player_1,
+    :player_2,
+    :tiles,
+    :scale
   ]
+
+  @doc """
+  Inits a board with given scale and player tiles
+  """
+  def init(scale, p1 \\ :X, p2 \\ :O) do
+    %Board{
+      player_1: p1,
+      player_2: p2,
+      tiles:    empty_board(scale),
+      scale:    scale
+    }
+  end
+
+  defp empty_board(scale) do
+    1..(scale * scale) |> Map.new(fn move -> {move, :empty} end)
+  end
 
   @doc """
   Updates a board with a move for a given player
@@ -53,21 +70,13 @@ defmodule TicTacToe.Board do
   """
   def winner?(board, player) do
     mvs = moves(board, player)
-    winning_states()
+    winning_states(board.scale)
     |> Enum.map(fn win_state -> match_winning_moves(win_state, mvs) end)
-    |> Enum.any?(fn xs -> length(xs) == 3 end)
+    |> Enum.any?(fn xs -> length(xs) == board.scale end)
   end
 
-  defp match_winning_moves(win_state, moves) do
+  def match_winning_moves(win_state, moves) do
     moves |> Enum.filter(fn x -> Enum.member?(win_state, x) end)
-  end
-
-  defp winning_states do
-    [
-      [1, 2, 3], [4, 5, 6], [7, 8, 9],
-      [1, 4, 7], [2, 5, 8], [3, 6, 9],
-      [1, 5, 9], [3, 5, 7]
-    ]
   end
 
   @doc """
@@ -91,6 +100,16 @@ defmodule TicTacToe.Board do
   end
 
   @doc """
+  Gets tile symbol for given player
+  """
+  def tile_symbol(board, player) do
+    case player do
+      :player_1 -> board.player_1
+      :player_2 -> board.player_2
+    end
+  end
+
+  @doc """
   Swaps player for alternate one
   """
   def swap_player(:player_1), do: :player_2
@@ -101,4 +120,19 @@ defmodule TicTacToe.Board do
   """
   def swap_symbol(:X), do: :O
   def swap_symbol(:O), do: :X
+
+  @doc """
+  Returns all possible winning states for a given size of board
+  """
+  def winning_states(n) do
+    rows(n) ++ columns(n)
+            ++ [left_diag(n)]
+            ++ [right_diag(n)]
+  end
+
+  defp rows(n),       do: 1..(n * n)     |> Enum.chunk(n)
+  defp columns(n),    do: 1..n           |> Enum.map(fn x -> col n, x end)
+  defp col(n, y),     do: 0..(n - 1)     |> Enum.map(fn x -> x * n + y end)
+  defp left_diag(n),  do: 1..n           |> Enum.scan(fn _, x -> x + n + 1 end)
+  defp right_diag(n), do: n..(n + n - 1) |> Enum.scan(fn _, x -> x + n - 1 end)
 end

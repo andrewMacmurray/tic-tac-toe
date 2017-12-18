@@ -1,4 +1,4 @@
-defmodule TicTacToe.Minimax do
+defmodule TicTacToe.Strategy.Minimax do
   @moduledoc false
   alias TicTacToe.Board
 
@@ -27,6 +27,7 @@ defmodule TicTacToe.Minimax do
   defp minimax(board, depth, {player, is_oponent} = ps) do
     win  = Board.winner?(board, player)
     cond do
+      depth > 4          -> 0
       win && !is_oponent ->  1 / depth
       win && is_oponent  -> -1 / depth
       Board.full?(board) -> 0

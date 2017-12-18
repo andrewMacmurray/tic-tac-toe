@@ -8,15 +8,21 @@ defmodule TicTacToe.Console.Options do
   def get(io \\ IO) do
     case get_game_option(io) do
       :human_v_computer -> human_v_computer(io)
-      opt               -> opt
+      opt               -> same_player_type_game(opt, io)
     end
   end
 
-  def human_v_computer(io \\ IO) do
+  def same_player_type_game(opt, io) do
+    board_scale = get_board_scale(io)
+    {opt, board_scale}
+  end
+
+  def human_v_computer(io) do
     tile_message_computer(io)
     tile_symbol = get_tile_symbol(io)
+    board_scale  = get_board_scale(io)
     player      = get_player(io)
-    {:human_v_computer, tile_symbol, player}
+    {:human_v_computer, tile_symbol, player, board_scale}
   end
 
   defp tile_message_computer(io) do
@@ -44,6 +50,18 @@ defmodule TicTacToe.Console.Options do
     ]
     |> Message.join_lines()
     |> io.puts()
+  end
+
+  def get_board_scale(io \\ IO) do
+    get_board_scale_(io)
+    |> retry_on_error(&get_board_scale/1, io)
+  end
+
+  defp get_board_scale_(io) do
+    Message.board_scale() |> io.puts()
+    Message.three_or_four()
+    |> io.gets()
+    |> parse_board_scale!()
   end
 
   def get_tile_symbol(io \\ IO) do
@@ -84,6 +102,14 @@ defmodule TicTacToe.Console.Options do
       "1" -> :human_v_human
       "2" -> :computer_v_computer
       "3" -> :human_v_computer
+      _   -> :error
+    end
+  end
+
+  def parse_board_scale!(input) do
+    case String.trim(input) do
+      "3" -> 3
+      "4" -> 4
       _   -> :error
     end
   end

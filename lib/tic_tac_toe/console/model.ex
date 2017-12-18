@@ -14,33 +14,33 @@ defmodule TicTacToe.Console.Model do
   @doc """
   Initialises a game for a given config
   """
-  def init(:human_v_human) do
+  def init({:human_v_human, board_scale}) do
     %Model{
       game_type: :human_v_human,
-      board:     %Board{}
+      board:      Board.init(board_scale)
     }
   end
 
-  def init({:human_v_computer, symbol, player}) do
+  def init({:human_v_computer, symbol, player, board_scale}) do
     %Model{
       game_type: :human_v_computer,
-      board:     init_board(symbol, player),
-      ai_player: Board.swap_player(player)
+      board:      assign_board(symbol, player, board_scale),
+      ai_player:  Board.swap_player(player)
     }
   end
 
-  def init(:computer_v_computer) do
+  def init({:computer_v_computer, board_scale}) do
     %Model{
       game_type: :computer_v_computer,
-      board:     %Board{}
+      board:      Board.init(board_scale)
     }
   end
 
-  defp init_board(symbol, player) do
+  defp assign_board(symbol, player, board_scale) do
     alternate = Board.swap_symbol(symbol)
     case player do
-      :player_1 -> %Board{player_1: symbol, player_2: alternate}
-      :player_2 -> %Board{player_2: symbol, player_1: alternate}
+      :player_1 -> Board.init(board_scale, symbol, alternate)
+      :player_2 -> Board.init(board_scale, alternate, symbol)
     end
   end
 

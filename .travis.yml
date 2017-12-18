@@ -10,3 +10,6 @@ env:
   - MIX_ENV=test
 
 script: mix coveralls.travis
+
+notifications:
+  email: false
