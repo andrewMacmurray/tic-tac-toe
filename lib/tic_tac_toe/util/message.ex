@@ -61,8 +61,5 @@ defmodule TicTacToe.Util.Message do
   def play_again, do: "Do you want to play another game?"
   def goodbye,    do: "Ok bye! 👋"
 
-  @doc """
-  Joins a list of strings together with a new line
-  """
   def join_lines(xs), do: Enum.join(xs, "\n")
 end

@@ -3,7 +3,7 @@ defmodule TicTacToe.AI do
   alias TicTacToe.Strategy.{ThreeByThree, FourByFour}
 
   @doc """
-  Returns the best possible move for a given player
+  Returns a strategic move for a given player based on the board scale
   """
   def run(board, ai_player) do
     case board.scale do
