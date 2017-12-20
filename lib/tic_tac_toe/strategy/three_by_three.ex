@@ -13,12 +13,12 @@ defmodule TicTacToe.Strategy.ThreeByThree do
     moves_left = Board.possible_moves(board) |> length()
     case moves_left do
       9 -> @center
-      8 -> counter_first_move_three(board)
+      8 -> counter_first_move(board)
       _ -> Minimax.best_move(board, ai_player)
     end
   end
 
-  defp counter_first_move_three(board) do
+  defp counter_first_move(board) do
     if Board.empty_at?(board, @center) do @center else @corner end
   end
 end

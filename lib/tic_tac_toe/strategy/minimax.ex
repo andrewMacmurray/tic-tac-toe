@@ -29,11 +29,11 @@ defmodule TicTacToe.Strategy.Minimax do
   defp minimax(board, depth, {player, is_oponent} = ps) do
     win  = Board.winner?(board, player)
     cond do
-      depth > @max_depth -> 0
+      depth > @max_depth ->  0
       win && !is_oponent ->  1 / depth
       win && is_oponent  -> -1 / depth
-      Board.full?(board) -> 0
-      true               -> go_again(board, depth + 1, swap_player_state(ps))
+      Board.full?(board) ->  0
+      true               ->  go_again(board, depth + 1, swap_player_state(ps))
     end
   end
 
