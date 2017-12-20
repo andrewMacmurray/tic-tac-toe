@@ -3,13 +3,16 @@ defmodule TicTacToe.Strategy.FourByFour do
   alias TicTacToe.Strategy.Minimax
   alias TicTacToe.Board
 
+  @scale 4
+  @center_tiles [6, 7, 10, 11]
+
   @doc """
   AI strategy for 4x4 game
   """
   def strategy(board, ai_player) do
     moves_left = Board.possible_moves(board) |> length()
     cond do
-      moves_left == 16 -> 6
+      moves_left == 16 -> List.first(@center_tiles)
       moves_left == 15 -> take_center(board)
       moves_left > 8   -> aggressively_block(board, ai_player)
       true             -> Minimax.best_move(board, ai_player)
@@ -20,7 +23,7 @@ defmodule TicTacToe.Strategy.FourByFour do
   Takes a center tile not already taken by a player
   """
   def take_center(board) do
-    [6, 7, 10, 11] |> Enum.find(fn tile -> Board.empty_at?(board, tile) end)
+    @center_tiles |> Enum.find(fn tile -> Board.empty_at?(board, tile) end)
   end
 
   @doc """
@@ -80,7 +83,7 @@ defmodule TicTacToe.Strategy.FourByFour do
 
   def match_winning_states(board, player) do
     moves = board |> Board.moves(player)
-    Board.winning_states(4)
+    Board.winning_states(@scale)
     |> Enum.map(fn st -> {st, Board.match_winning_moves(st, moves)} end)
   end
 

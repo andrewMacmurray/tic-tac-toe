@@ -33,10 +33,7 @@ defmodule TicTacToe.Board do
   end
 
   defp update_tiles(board, move, player) do
-    case player do
-      :player_1 -> %{board.tiles | move => board.player_1}
-      :player_2 -> %{board.tiles | move => board.player_2}
-    end
+    %{board.tiles | move => Board.tile_symbol(board, player)}
   end
 
   @doc """
